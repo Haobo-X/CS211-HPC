@@ -1,0 +1,46 @@
+
+*********** Register Reuse ***********
+dgemm0 -   66: elapsed time is  0.00282 second(s).
+dgemm0 -  126: elapsed time is  0.01261 second(s).
+dgemm0 -  258: elapsed time is  0.10647 second(s).
+dgemm0 -  510: elapsed time is  1.23112 second(s).
+dgemm0 - 1026: elapsed time is  8.83885 second(s).
+dgemm0 - 2046: elapsed time is 84.61545 second(s).
+dgemm1 -   66: elapsed time is  0.00087 second(s).
+dgemm1 -  126: elapsed time is  0.00365 second(s).
+dgemm1 -  258: elapsed time is  0.03555 second(s).
+dgemm1 -  510: elapsed time is  0.50825 second(s).
+dgemm1 - 1026: elapsed time is  4.09998 second(s).
+dgemm1 - 2046: elapsed time is 38.20184 second(s).
+dgemm2 -   66: elapsed time is  0.00035 second(s).
+dgemm2 -  126: elapsed time is  0.00170 second(s).
+dgemm2 -  258: elapsed time is  0.01925 second(s).
+dgemm2 -  510: elapsed time is  0.20787 second(s).
+dgemm2 - 1026: elapsed time is  2.41195 second(s).
+dgemm2 - 2046: elapsed time is 30.63538 second(s).
+dgemm3 -   66: elapsed time is  0.00027 second(s).
+dgemm3 -  126: elapsed time is  0.00146 second(s).
+dgemm3 -  258: elapsed time is  0.01216 second(s).
+dgemm3 -  510: elapsed time is  0.12993 second(s).
+dgemm3 - 1026: elapsed time is  1.00691 second(s).
+dgemm3 - 2046: elapsed time is  7.06304 second(s).
+
+*********** Cache reuse ***********
+ijk : elapsed time is 38.58491 second(s).
+jik : elapsed time is 20.18229 second(s).
+kij : elapsed time is 16.29535 second(s).
+ikj : elapsed time is 15.98292 second(s).
+jki : elapsed time is 62.18392 second(s).
+kji : elapsed time is 62.09677 second(s).
+bijk: elapsed time is 30.83644 second(s).
+bjik: elapsed time is 30.18431 second(s).
+bkij: elapsed time is 27.07693 second(s).
+bikj: elapsed time is 29.73276 second(s).
+bjki: elapsed time is 33.82557 second(s).
+bkji: elapsed time is 32.19726 second(s).
+
+*********** Cache reuse - Part 4. ***********
+O0 : elapsed time is 11.06479 second(s).
+O1 : elapsed time is 10.95419 second(s).
+O2 : elapsed time is 10.94527 second(s).
+O3 : elapsed time is 10.94833 second(s).
