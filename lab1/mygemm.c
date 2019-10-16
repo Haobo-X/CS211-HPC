@@ -10,11 +10,14 @@
 
 void dgemm0(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i++)
+	int i = 0;
+	for (i = 0; i < n; i++)
 	{
-		for (int j = 0; j < n; j++)
+		int j = 0;
+	    for (j = 0; j < n; j++)
 		{
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				C[i * n + j] += A[i * n + k] * B[k * n + j];
 			}
@@ -24,12 +27,15 @@ void dgemm0(const double* A, const double* B, double* C, const int n)
 
 void dgemm1(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i++)
+	int i = 0;
+	for (i = 0; i < n; i++)
 	{
-		for (int j = 0; j < n; j++)
+		int j = 0;
+	    for (j = 0; j < n; j++)
 		{
 			register double C_i_j = C[i * n + j];
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				C_i_j += A[i * n + k] * B[k * n + j];
 			}
@@ -40,16 +46,19 @@ void dgemm1(const double* A, const double* B, double* C, const int n)
 
 void dgemm2(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i += 2)
+	int i = 0;
+	for (i = 0; i < n; i += 2)
 	{
-		for (int j = 0; j < n; j += 2)
+		int j = 0;
+	    for (j = 0; j < n; j += 2)
 		{
 			register double C_0_0 = C[i * n + j];
 			register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
 			register double C_0_1 = j < (n - 1) ? C[i * n + (j + 1)] : 0;
 			register double C_1_1 = (i < (n - 1)) && (j < (n - 1)) ? C[(i + 1) * n + (j + 1)] : 0;
 
-			for (int k = 0; k < n; k += 2)
+			int k = 0;
+	        for (k = 0; k < n; k += 2)
 			{
 				register double A_0_0 = A[i * n + k];
 				register double A_1_0 = i < (n - 1) ? A[(i + 1) * n + k] : 0;
@@ -77,9 +86,11 @@ void dgemm2(const double* A, const double* B, double* C, const int n)
 
 void dgemm3_3X3(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i += 3)
+	int i = 0;
+	for (i = 0; i < n; i += 3)
 	{
-		for (int j = 0; j < n; j += 3)
+		int j = 0;
+	    for (j = 0; j < n; j += 3)
 		{
 			register double C_0_0 = C[i * n + j];
 			register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
@@ -93,7 +104,8 @@ void dgemm3_3X3(const double* A, const double* B, double* C, const int n)
 			register double C_1_2 = (i < (n - 1)) && (j < (n - 2)) ? C[(i + 1) * n + (j + 2)] : 0;
 			register double C_2_2 = (i < (n - 2)) && (j < (n - 2)) ? C[(i + 2) * n + (j + 2)] : 0;
 
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				register double A_0_M = A[i * n + k];
 				register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
@@ -133,9 +145,11 @@ void dgemm3_3X3(const double* A, const double* B, double* C, const int n)
 
 void dgemm3_3X3_v2(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i += 3)
+	int i = 0;
+	for (i = 0; i < n; i += 3)
 	{
-		for (int j = 0; j < n; j += 3)
+		int j = 0;
+	    for (j = 0; j < n; j += 3)
 		{
 			register double C_0_0 = C[i * n + j];
 			register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
@@ -149,7 +163,8 @@ void dgemm3_3X3_v2(const double* A, const double* B, double* C, const int n)
 			register double C_1_2 = (i < (n - 1)) && (j < (n - 2)) ? C[(i + 1) * n + (j + 2)] : 0;
 			register double C_2_2 = (i < (n - 2)) && (j < (n - 2)) ? C[(i + 2) * n + (j + 2)] : 0;
 
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				register double A_0_M = A[i * n + k];
 				register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
@@ -189,9 +204,11 @@ void dgemm3_3X3_v2(const double* A, const double* B, double* C, const int n)
 void dgemm3(const double* A, const double* B, double* C, const int n)
 {
 	//block 3X4, 12 for C, 3 for A, 1 for B, total 16;
-	for (int i = 0; i < n; i += 3)
+	int i = 0;
+	for (i = 0; i < n; i += 3)
 	{
-		for (int j = 0; j < n; j += 4)
+		int j = 0;
+	    for (j = 0; j < n; j += 4)
 		{
 			register double C_0_0 = C[i * n + j];
 			register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
@@ -209,7 +226,8 @@ void dgemm3(const double* A, const double* B, double* C, const int n)
 			register double C_1_3 = i < (n - 1) && j < (n - 3) ? C[(i + 1) * n + (j + 3)] : 0;
 			register double C_2_3 = i < (n - 2) && j < (n - 3) ? C[(i + 2) * n + (j + 3)] : 0;
 
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				register double A_0_M = A[i * n + k];
 				register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
@@ -257,12 +275,15 @@ void dgemm3(const double* A, const double* B, double* C, const int n)
 
 void ijk(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i++)
+	int i = 0;
+	for (i = 0; i < n; i++)
 	{
-		for (int j = 0; j < n; j++)
+		int j = 0;
+	    for (j = 0; j < n; j++)
 		{
 			register double C_i_j = C[i * n + j];
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				C_i_j += A[i * n + k] * B[k * n + j];
 			}
@@ -273,18 +294,24 @@ void ijk(const double* A, const double* B, double* C, const int n)
 
 void bijk(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int i = 0; i < n; i += b)
+	int i = 0;
+	for (i = 0; i < n; i += b)
 	{
-		for (int j = 0; j < n; j += b)
+		int j = 0;
+	    for (j = 0; j < n; j += b)
 		{
-			for (int k = 0; k < n; k += b)
+			int k = 0;
+	        for (k = 0; k < n; k += b)
 			{
-				for (int i1 = i; i1 < i + b && i1 < n; i1++)
+				int i1 = 0;
+	            for (i1 = i; i1 < i + b && i1 < n; i1++)
 				{
-					for (int j1 = j; j1 < j + b && j1 < n; j1++)
+					int j1 = 0;
+	                for (j1 = j; j1 < j + b && j1 < n; j1++)
 					{
 						register double C_i1_j1 = C[i1 * n + j1];
-						for (int k1 = k; k1 < k + b && k1 < n; k1++)
+						int k1 = 0;
+	                    for (k1 = k; k1 < k + b && k1 < n; k1++)
 						{
 							C_i1_j1 += A[i1 * n + k1] * B[k1 * n + j1];
 						}
@@ -298,12 +325,15 @@ void bijk(const double* A, const double* B, double* C, const int n, const int b)
 
 void jik(const double* A, const double* B, double* C, const int n)
 {
-	for (int j = 0; j < n; j++)
+	int j = 0;
+	for (j = 0; j < n; j++)
 	{
-		for (int i = 0; i < n; i++)
+		int i = 0;
+	    for (i = 0; i < n; i++)
 		{
 			register double C_i_j = C[i * n + j];
-			for (int k = 0; k < n; k++)
+			int k = 0;
+	        for (k = 0; k < n; k++)
 			{
 				C_i_j += A[i * n + k] * B[k * n + j];
 			}
@@ -314,18 +344,24 @@ void jik(const double* A, const double* B, double* C, const int n)
 
 void bjik(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int j = 0; j < n; j += b)
+	int j = 0;
+	for (j = 0; j < n; j += b)
 	{
-		for (int i = 0; i < n; i += b)
+		int i = 0;
+	    for (i = 0; i < n; i += b)
 		{
-			for (int k = 0; k < n; k += b)
+			int k = 0;
+	        for (k = 0; k < n; k += b)
 			{
-				for (int j1 = j; j1 < j + b && j1 < n; j1++)
+				int j1 = 0;
+	            for (j1 = j; j1 < j + b && j1 < n; j1++)
 				{
-					for (int i1 = i; i1 < i + b && i1 < n; i1++)
+					int i1 = 0;
+	                for (i1 = i; i1 < i + b && i1 < n; i1++)
 					{
 						register double C_i1_j1 = C[i1 * n + j1];
-						for (int k1 = k; k1 < k + b && k1 < n; k1++)
+						int k1 = 0;
+	                    for (k1 = k; k1 < k + b && k1 < n; k1++)
 						{
 							C_i1_j1 += A[i1 * n + k1] * B[k1 * n + j1];
 						}
@@ -339,12 +375,15 @@ void bjik(const double* A, const double* B, double* C, const int n, const int b)
 
 void kij(const double* A, const double* B, double* C, const int n)
 {
-	for (int k = 0; k < n; k++)
+	int k = 0;
+	for (k = 0; k < n; k++)
 	{
-		for (int i = 0; i < n; i++)
+		int i = 0;
+	    for (i = 0; i < n; i++)
 		{
 			register double A_i_k = A[i * n + k];
-			for (int j = 0; j < n; j++)
+			int j = 0;
+	        for (j = 0; j < n; j++)
 			{
 				C[i * n + j] += A_i_k * B[k * n + j];
 			}
@@ -354,18 +393,24 @@ void kij(const double* A, const double* B, double* C, const int n)
 
 void bkij(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int k = 0; k < n; k += b)
+	int k = 0;
+	for (k = 0; k < n; k += b)
 	{
-		for (int i = 0; i < n; i += b)
+		int i = 0;
+	    for (i = 0; i < n; i += b)
 		{
-			for (int j = 0; j < n; j += b)
+			int j = 0;
+	        for (j = 0; j < n; j += b)
 			{
-				for (int k1 = k; k1 < k + b && k1 < n; k1++)
+				int k1 = 0;
+	            for (k1 = k; k1 < k + b && k1 < n; k1++)
 				{
-					for (int i1 = i; i1 < i + b && i1 < n; i1++)
+					int i1 = 0;
+	                for (i1 = i; i1 < i + b && i1 < n; i1++)
 					{
 						register double A_i1_k1 = A[i1 * n + k1];
-						for (int j1 = j; j1 < j + b && j1 < n; j1++)
+						int j1 = 0;
+	                    for (j1 = j; j1 < j + b && j1 < n; j1++)
 						{
 							C[i1 * n + j1] += A_i1_k1 * B[k1 * n + j1];
 						}
@@ -379,12 +424,15 @@ void bkij(const double* A, const double* B, double* C, const int n, const int b)
 
 void ikj(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i++)
+	int i = 0;
+	for (i = 0; i < n; i++)
 	{
-		for (int k = 0; k < n; k++)
+		int k = 0;
+	    for (k = 0; k < n; k++)
 		{
 			register double A_i_k = A[i * n + k];
-			for (int j = 0; j < n; j++)
+			int j = 0;
+	        for (j = 0; j < n; j++)
 			{
 				C[i * n + j] += A_i_k * B[k * n + j];
 			}
@@ -394,18 +442,24 @@ void ikj(const double* A, const double* B, double* C, const int n)
 
 void bikj(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int i = 0; i < n; i += b)
+	int i = 0;
+	for (i = 0; i < n; i += b)
 	{
-		for (int k = 0; k < n; k += b)
+		int k = 0;
+	    for (k = 0; k < n; k += b)
 		{
-			for (int j = 0; j < n; j += b)
+			int j = 0;
+	        for (j = 0; j < n; j += b)
 			{
-				for (int i1 = i; i1 < i + b && i1 < n; i1++)
+				int i1 = 0;
+	            for (i1 = i; i1 < i + b && i1 < n; i1++)
 				{
-					for (int k1 = k; k1 < k + b && k1 < n; k1++)
+					int k1 = 0;
+	                for (k1 = k; k1 < k + b && k1 < n; k1++)
 					{
 						register double A_i1_k1 = A[i1 * n + k1];
-						for (int j1 = j; j1 < j + b && j1 < n; j1++)
+						int j1 = 0;
+	                    for (j1 = j; j1 < j + b && j1 < n; j1++)
 						{
 							C[i1 * n + j1] += A_i1_k1 * B[k1 * n + j1];
 						}
@@ -418,12 +472,15 @@ void bikj(const double* A, const double* B, double* C, const int n, const int b)
 
 void jki(const double* A, const double* B, double* C, const int n)
 {
-	for (int j = 0; j < n; j++)
+	int j = 0;
+	for (j = 0; j < n; j++)
 	{
-		for (int k = 0; k < n; k++)
+		int k = 0;
+	    for (k = 0; k < n; k++)
 		{
 			register double B_k_j = B[k * n + j];
-			for (int i = 0; i < n; i++)
+			int i = 0;
+	        for (i = 0; i < n; i++)
 			{
 				C[i * n + j] += A[i * n + k] * B_k_j;
 			}
@@ -433,18 +490,24 @@ void jki(const double* A, const double* B, double* C, const int n)
 
 void bjki(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int j = 0; j < n; j += b)
+	int j = 0;
+	for (j = 0; j < n; j += b)
 	{
-		for (int k = 0; k < n; k += b)
+		int k = 0;
+	    for (k = 0; k < n; k += b)
 		{
-			for (int i = 0; i < n; i += b)
+			int i = 0;
+	        for (i = 0; i < n; i += b)
 			{
-				for (int j1 = j; j1 < j + b && j1 < n; j1++)
+				int j1 = 0;
+	            for (j1 = j; j1 < j + b && j1 < n; j1++)
 				{
-					for (int k1 = k; k1 < k + b && k1 < n; k1++)
+					int k1 = 0;
+	                for (k1 = k; k1 < k + b && k1 < n; k1++)
 					{
 						register double B_k1_j1 = B[k1 * n + j1];
-						for (int i1 = i; i1 < i + b && i1 < n; i1++)
+						int i1 = 0;
+	                    for (i1 = i; i1 < i + b && i1 < n; i1++)
 						{
 							C[i1 * n + j1] += A[i1 * n + k1] * B_k1_j1;
 						}
@@ -457,12 +520,15 @@ void bjki(const double* A, const double* B, double* C, const int n, const int b)
 
 void kji(const double* A, const double* B, double* C, const int n)
 {
-	for (int k = 0; k < n; k++)
+	int k = 0;
+	for (k = 0; k < n; k++)
 	{
-		for (int j = 0; j < n; j++)
+		int j = 0;
+	    for (j = 0; j < n; j++)
 		{
 			register double B_k_j = B[k * n + j];
-			for (int i = 0; i < n; i++)
+			int i = 0;
+	        for (i = 0; i < n; i++)
 			{
 				C[i * n + j] += A[i * n + k] * B_k_j;
 			}
@@ -472,18 +538,24 @@ void kji(const double* A, const double* B, double* C, const int n)
 
 void bkji(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int k = 0; k < n; k += b)
+	int k = 0;
+	for (k = 0; k < n; k += b)
 	{
-		for (int j = 0; j < n; j += b)
+		int j = 0;
+	    for (j = 0; j < n; j += b)
 		{
-			for (int i = 0; i < n; i += b)
+			int i = 0;
+	        for (i = 0; i < n; i += b)
 			{
-				for (int k1 = k; k1 < k + b && k1 < n; k1++)
+				int k1 = 0;
+	            for (k1 = k; k1 < k + b && k1 < n; k1++)
 				{
-					for (int j1 = j; j1 < j + b && j1 < n; j1++)
+					int j1 = 0;
+	                for (j1 = j; j1 < j + b && j1 < n; j1++)
 					{
 						register double B_k1_j1 = B[k1 * n + j1];
-						for (int i1 = i; i1 < i + b && i1 < n; i1++)
+						int i1 = 0;
+	                    for (i1 = i; i1 < i + b && i1 < n; i1++)
 						{
 							C[i1 * n + j1] += A[i1 * n + k1] * B_k1_j1;
 						}
@@ -496,15 +568,20 @@ void bkji(const double* A, const double* B, double* C, const int n, const int b)
 
 void optimal(const double* A, const double* B, double* C, const int n, const int b)
 {
-	for (int k = 0; k < n; k += b)
+	int k = 0;
+	for (k = 0; k < n; k += b)
 	{
-		for (int i = 0; i < n; i += b)
+		int i = 0;
+	    for (i = 0; i < n; i += b)
 		{
-			for (int j = 0; j < n; j += b)
+			int j = 0;
+	        for (j = 0; j < n; j += b)
 			{
-				for (int i1 = i; i1 < i + b; i1 += 3)
+				int i1 = 0;
+	            for (i1 = i; i1 < i + b; i1 += 3)
 				{
-					for (int j1 = j; j1 < j + b; j1 += 4)
+					int j1 = 0;
+	                for (j1 = j; j1 < j + b; j1 += 4)
 					{
 						register double C_0_0 = i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n ? C[i1 * n + j1] : 0;
 						register double C_1_0 = i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n ? C[(i1 + 1) * n + j1] : 0;
@@ -522,7 +599,8 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
 						register double C_1_3 = i1 < (i + b - 1) && j1 < (j + b - 3) && i1 < (n - 1) && j1 < (n - 3) ? C[(i1 + 1) * n + (j1 + 3)] : 0;
 						register double C_2_3 = i1 < (i + b - 2) && j1 < (j + b - 3) && i1 < (n - 2) && j1 < (n - 3) ? C[(i1 + 2) * n + (j1 + 3)] : 0;
 
-						for (int k1 = k; k1 < k + b; k1++)
+						int k1 = 0;
+	                    for (k1 = k; k1 < k + b; k1++)
 						{
 							register double A_0_M = i1 < (i + b) && k1 < (k + b) && i1 < n && k1 < n ? A[i1 * n + k1] : 0;
 							register double A_1_M = i1 < (i + b - 1) && k1 < (k + b) && i1 < (n - 1) && k1 < n ? A[(i1 + 1) * n + k1] : 0;
@@ -573,8 +651,12 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
 
 void addMatrix(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
+	int i = 0;
+	for (i = 0; i < n; i++) 
+	{
+		int j = 0;
+	    for (j = 0; j < n; j++) 
+		{
 			C[i * n + j] = A[i * n + j] + B[i * n + j];
 		}
 	}
@@ -582,8 +664,12 @@ void addMatrix(const double* A, const double* B, double* C, const int n)
 
 void minusMatrix(const double* A, const double* B, double* C, const int n)
 {
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
+	int i = 0;
+	for (i = 0; i < n; i++) 
+	{
+		int j = 0;
+	    for (j = 0; j < n; j++) 
+		{
 			C[i * n + j] = A[i * n + j] - B[i * n + j];
 		}
 	}
@@ -608,28 +694,35 @@ void strassen(const double* A, const double* B, double* C, const int n)
 		double* new_A_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 		double* new_A_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-		for (int i = 0; i < n / 2; i++) {
-			for (int j = 0; j < n / 2; j++) {
-				new_A_0_0[i * n / 2 + j] = A[i * n + j];
-				new_A_0_1[i * n / 2 + j] = A[i * n + (j + n / 2)];
-				new_A_1_0[i * n / 2 + j] = A[(i + n / 2) * n + j];
-				new_A_1_1[i * n / 2 + j] = A[(i + n / 2) * n + (j + n / 2)];
-			}
-		}
+		int i = 0;
+	    for (i = 0; i < n / 2; i++) 
+	    {
+	    	int j = 0;
+	        for (j = 0; j < n / 2; j++) 
+	    	{
+	    		new_A_0_0[i * n / 2 + j] = A[i * n + j];
+	    		new_A_0_1[i * n / 2 + j] = A[i * n + (j + n / 2)];
+	    		new_A_1_0[i * n / 2 + j] = A[(i + n / 2) * n + j];
+	    		new_A_1_1[i * n / 2 + j] = A[(i + n / 2) * n + (j + n / 2)];
+	    	}
+	    }
 
 		double* new_B_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 		double* new_B_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 		double* new_B_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 		double* new_B_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-		for (int i = 0; i < n / 2; i++) {
-			for (int j = 0; j < n / 2; j++) {
-				new_B_0_0[i * n / 2 + j] = B[i * n + j];
-				new_B_0_1[i * n / 2 + j] = B[i * n + (j + n / 2)];
-				new_B_1_0[i * n / 2 + j] = B[(i + n / 2) * n + j];
-				new_B_1_1[i * n / 2 + j] = B[(i + n / 2) * n + (j + n / 2)];
-			}
-		}
+	    for (i = 0; i < n / 2; i++) 
+	    {
+		    int j = 0;
+	        for (j = 0; j < n / 2; j++) 
+			{
+		    	new_B_0_0[i * n / 2 + j] = B[i * n + j];
+		    	new_B_0_1[i * n / 2 + j] = B[i * n + (j + n / 2)];
+		    	new_B_1_0[i * n / 2 + j] = B[(i + n / 2) * n + j];
+		    	new_B_1_1[i * n / 2 + j] = B[(i + n / 2) * n + (j + n / 2)];
+		    }
+	    }
 
 		double* new_C_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 		double* new_C_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
@@ -683,14 +776,18 @@ void strassen(const double* A, const double* B, double* C, const int n)
 		addMatrix(LEFT_PLUS, M_6, RIGHT_PLUS, n / 2);
 		minusMatrix(RIGHT_PLUS, M_2, new_C_1_1, n / 2);
 
-		for (int i = 0; i < n / 2; i++) {
-			for (int j = 0; j < n / 2; j++) {
-				C[i * n + j] = new_C_0_0[i * n / 2 + j];
-				C[i * n + (j + n / 2)] = new_C_0_1[i * n / 2 + j];
-				C[(i + n / 2) * n + j] = new_C_1_0[i * n / 2 + j];
-				C[(i + n / 2) * n + (j + n / 2)] = new_C_1_1[i * n / 2 + j];
-			}
-		}
+
+	    for (i = 0; i < n / 2; i++) 
+	    {
+	    	int j = 0;
+	        for (j = 0; j < n / 2; j++) 
+	        {
+			    C[i * n + j] = new_C_0_0[i * n / 2 + j];
+			    C[i * n + (j + n / 2)] = new_C_0_1[i * n / 2 + j];
+			    C[(i + n / 2) * n + j] = new_C_1_0[i * n / 2 + j];
+			    C[(i + n / 2) * n + (j + n / 2)] = new_C_1_1[i * n / 2 + j];
+		    }
+	    }
 
 		free(new_A_0_0);
 		free(new_A_0_1);
