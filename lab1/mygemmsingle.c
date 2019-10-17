@@ -375,7 +375,12 @@ int randomize_matrix(double *A, const int m, const int n)
 	}
     return 0;
 }
-
+double get_sec()
+{
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	return (time.tv_sec + 1e-6 * time.tv_usec);
+}
 int main(int argc, char *argv[])
 {
     printf("\n*********** Register Reuse ***********\n");
