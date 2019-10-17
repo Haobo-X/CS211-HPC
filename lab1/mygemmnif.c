@@ -1,4 +1,4 @@
-#include "mygemm.h"
+#include "mygemmnif.h"
 
 /**
  * 
@@ -7,7 +7,7 @@
  * 
  **/
 
-
+/*
 void dgemm0(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
@@ -43,8 +43,8 @@ void dgemm1(const double* A, const double* B, double* C, const int n)
         }
     }
 }
-
-void dgemm2(const double* A, const double* B, double* C, const int n)
+*/
+void dgemm2_nif(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
     for (i = 0; i < n; i += 2)
@@ -84,7 +84,7 @@ void dgemm2(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm2_2x2_v2(const double* A, const double* B, double* C, const int n)
+void dgemm2_2x2_v2_nif(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
     for (i = 0; i < n; i += 2)
@@ -122,7 +122,7 @@ void dgemm2_2x2_v2(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm3(const double* A, const double* B, double* C, const int n)
+void dgemm3_nif(const double* A, const double* B, double* C, const int n)
 {
     //block 3X4, 12 for C, 3 for A, 1 for B, total 16;
     int i = 0;
@@ -194,7 +194,7 @@ void dgemm3(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm3_3x3(const double* A, const double* B, double* C, const int n)
+void dgemm3_3x3_nif(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
     for (i = 0; i < n; i += 3)
@@ -253,7 +253,7 @@ void dgemm3_3x3(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm3_3x3_v2(const double* A, const double* B, double* C, const int n)
+void dgemm3_3x3_v2_nif(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
     for (i = 0; i < n; i += 3)
@@ -310,7 +310,7 @@ void dgemm3_3x3_v2(const double* A, const double* B, double* C, const int n)
         }
     }
 }
-
+/*
 void ijk(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
@@ -849,4 +849,4 @@ void strassen(const double* A, const double* B, double* C, const int n)
         free(LEFT_PLUS);
         free(RIGHT_PLUS);
     }
-}
+}*/
