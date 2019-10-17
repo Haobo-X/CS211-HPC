@@ -345,13 +345,13 @@ void dgemm4_4x4_nif(const double* A, const double* B, double* C, const int n)
                 register double A_0_M = A[i * n + k];
                 register double A_1_M = A[(i + 1) * n + k];
                 register double A_2_M = A[(i + 2) * n + k];
-                register double A_2_M = A[(i + 3) * n + k];
+                register double A_3_M = A[(i + 3) * n + k];
 
 
                 register double B_M_0 = B[k * n + j];
                 register double B_M_1 = B[k * n + (j + 1)];
                 register double B_M_2 = B[k * n + (j + 2)];
-                register double B_M_2 = B[k * n + (j + 3)];
+                register double B_M_3 = B[k * n + (j + 3)];
 
                 C_0_0 += A_0_M * B_M_0;
                 C_1_0 += A_1_M * B_M_0;
