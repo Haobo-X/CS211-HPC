@@ -55,7 +55,7 @@ void dgemm2(const double* A, const double* B, double* C, const int n)
             register double C_0_0 = C[i * n + j];
             register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
             register double C_0_1 = j < (n - 1) ? C[i * n + (j + 1)] : 0;
-            register double C_1_1 = (i < (n - 1)) && (j < (n - 1)) ? C[(i + 1) * n + (j + 1)] : 0;
+            register double C_1_1 = (i < (n - 1)) && (j < (n - 1))? C[(i + 1) * n + (j + 1)] : 0;
 
             int k = 0;
             for (k = 0; k < n; k += 2)
@@ -84,119 +84,40 @@ void dgemm2(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm3_3X3(const double* A, const double* B, double* C, const int n)
+void dgemm2_2x2_v2(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
-    for (i = 0; i < n; i += 3)
+    for (i = 0; i < n; i += 2)
     {
         int j = 0;
-        for (j = 0; j < n; j += 3)
+        for (j = 0; j < n; j += 2)
         {
             register double C_0_0 = C[i * n + j];
             register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
-            register double C_2_0 = i < (n - 2) ? C[(i + 2) * n + j] : 0;
 
             register double C_0_1 = j < (n - 1) ? C[i * n + (j + 1)] : 0;
             register double C_1_1 = (i < (n - 1)) && (j < (n - 1)) ? C[(i + 1) * n + (j + 1)] : 0;
-            register double C_2_1 = (i < (n - 2)) && (j < (n - 1)) ? C[(i + 2) * n + (j + 1)] : 0;
-
-            register double C_0_2 = j < (n - 2) ? C[i * n + (j + 2)] : 0;
-            register double C_1_2 = (i < (n - 1)) && (j < (n - 2)) ? C[(i + 1) * n + (j + 2)] : 0;
-            register double C_2_2 = (i < (n - 2)) && (j < (n - 2)) ? C[(i + 2) * n + (j + 2)] : 0;
 
             int k = 0;
             for (k = 0; k < n; k++)
             {
                 register double A_0_M = A[i * n + k];
                 register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
-                register double A_2_M = i < (n - 2) ? A[(i + 2) * n + k] : 0;
-
-                register double B_M_0 = B[k * n + j];
-                register double B_M_1 = j < (n - 1) ? B[k * n + (j + 1)] : 0;
-                register double B_M_2 = j < (n - 2) ? B[k * n + (j + 2)] : 0;
-
-                C_0_0 += A_0_M * B_M_0;
-                C_1_0 += A_1_M * B_M_0;
-                C_2_0 += A_2_M * B_M_0;
-
-                C_0_1 += A_0_M * B_M_1;
-                C_1_1 += A_1_M * B_M_1;
-                C_2_1 += A_2_M * B_M_1;
-
-                C_0_2 += A_0_M * B_M_2;
-                C_1_2 += A_1_M * B_M_2;
-                C_2_2 += A_2_M * B_M_2;
-            }
-
-            C[i * n + j] = C_0_0;
-            if (i < (n - 1)) C[(i + 1) * n + j] = C_1_0;
-            if (i < (n - 2)) C[(i + 2) * n + j] = C_2_0;
-
-            if (j < (n - 1)) C[i * n + (j + 1)] = C_0_1;
-            if (i < (n - 1) && j < (n - 1)) C[(i + 1) * n + (j + 1)] = C_1_1;
-            if (i < (n - 2) && j < (n - 1)) C[(i + 2) * n + (j + 1)] = C_2_1;
-
-            if (j < (n - 2)) C[i * n + (j + 2)] = C_0_2;
-            if (i < (n - 1) && j < (n - 2)) C[(i + 1) * n + (j + 2)] = C_1_2;
-            if (i < (n - 2) && j < (n - 2)) C[(i + 2) * n + (j + 2)] = C_2_2;
-        }
-    }
-}
-
-void dgemm3_3X3_v2(const double* A, const double* B, double* C, const int n)
-{
-    int i = 0;
-    for (i = 0; i < n; i += 3)
-    {
-        int j = 0;
-        for (j = 0; j < n; j += 3)
-        {
-            register double C_0_0 = C[i * n + j];
-            register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
-            register double C_2_0 = i < (n - 2) ? C[(i + 2) * n + j] : 0;
-
-            register double C_0_1 = j < (n - 1) ? C[i * n + (j + 1)] : 0;
-            register double C_1_1 = (i < (n - 1)) && (j < (n - 1)) ? C[(i + 1) * n + (j + 1)] : 0;
-            register double C_2_1 = (i < (n - 2)) && (j < (n - 1)) ? C[(i + 2) * n + (j + 1)] : 0;
-
-            register double C_0_2 = j < (n - 2) ? C[i * n + (j + 2)] : 0;
-            register double C_1_2 = (i < (n - 1)) && (j < (n - 2)) ? C[(i + 1) * n + (j + 2)] : 0;
-            register double C_2_2 = (i < (n - 2)) && (j < (n - 2)) ? C[(i + 2) * n + (j + 2)] : 0;
-
-            int k = 0;
-            for (k = 0; k < n; k++)
-            {
-                register double A_0_M = A[i * n + k];
-                register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
-                register double A_2_M = i < (n - 2) ? A[(i + 2) * n + k] : 0;
 
                 register double B_M = B[k * n + j];
                 C_0_0 += A_0_M * B_M;
                 C_1_0 += A_1_M * B_M;
-                C_2_0 += A_2_M * B_M;
 
                 B_M = j < (n - 1) ? B[k * n + (j + 1)] : 0;
                 C_0_1 += A_0_M * B_M;
                 C_1_1 += A_1_M * B_M;
-                C_2_1 += A_2_M * B_M;
-
-                B_M = j < (n - 2) ? B[k * n + (j + 2)] : 0;
-                C_0_2 += A_0_M * B_M;
-                C_1_2 += A_1_M * B_M;
-                C_2_2 += A_2_M * B_M;
             }
 
             C[i * n + j] = C_0_0;
             if (i < (n - 1)) C[(i + 1) * n + j] = C_1_0;
-            if (i < (n - 2)) C[(i + 2) * n + j] = C_2_0;
 
             if (j < (n - 1)) C[i * n + (j + 1)] = C_0_1;
             if (i < (n - 1) && j < (n - 1)) C[(i + 1) * n + (j + 1)] = C_1_1;
-            if (i < (n - 2) && j < (n - 1)) C[(i + 2) * n + (j + 1)] = C_2_1;
-
-            if (j < (n - 2)) C[i * n + (j + 2)] = C_0_2;
-            if (i < (n - 1) && j < (n - 2)) C[(i + 1) * n + (j + 2)] = C_1_2;
-            if (i < (n - 2) && j < (n - 2)) C[(i + 2) * n + (j + 2)] = C_2_2;
         }
     }
 }
@@ -269,6 +190,123 @@ void dgemm3(const double* A, const double* B, double* C, const int n)
             if (j < (n - 3)) C[i * n + (j + 3)] = C_0_3;
             if (i < (n - 1) && j < (n - 3)) C[(i + 1) * n + (j + 3)] = C_1_3;
             if (i < (n - 2) && j < (n - 3)) C[(i + 2) * n + (j + 3)] = C_2_3;
+        }
+    }
+}
+
+void dgemm3_3x3(const double* A, const double* B, double* C, const int n)
+{
+    int i = 0;
+    for (i = 0; i < n; i += 3)
+    {
+        int j = 0;
+        for (j = 0; j < n; j += 3)
+        {
+            register double C_0_0 = C[i * n + j];
+            register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
+            register double C_2_0 = i < (n - 2) ? C[(i + 2) * n + j] : 0;
+
+            register double C_0_1 = j < (n - 1) ? C[i * n + (j + 1)] : 0;
+            register double C_1_1 = (i < (n - 1)) && (j < (n - 1)) ? C[(i + 1) * n + (j + 1)] : 0;
+            register double C_2_1 = (i < (n - 2)) && (j < (n - 1)) ? C[(i + 2) * n + (j + 1)] : 0;
+
+            register double C_0_2 = j < (n - 2) ? C[i * n + (j + 2)] : 0;
+            register double C_1_2 = (i < (n - 1)) && (j < (n - 2)) ? C[(i + 1) * n + (j + 2)] : 0;
+            register double C_2_2 = (i < (n - 2)) && (j < (n - 2)) ? C[(i + 2) * n + (j + 2)] : 0;
+
+            int k = 0;
+            for (k = 0; k < n; k++)
+            {
+                register double A_0_M = A[i * n + k];
+                register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
+                register double A_2_M = i < (n - 2) ? A[(i + 2) * n + k] : 0;
+
+                register double B_M_0 = B[k * n + j];
+                register double B_M_1 = j < (n - 1) ? B[k * n + (j + 1)] : 0;
+                register double B_M_2 = j < (n - 2) ? B[k * n + (j + 2)] : 0;
+
+                C_0_0 += A_0_M * B_M_0;
+                C_1_0 += A_1_M * B_M_0;
+                C_2_0 += A_2_M * B_M_0;
+
+                C_0_1 += A_0_M * B_M_1;
+                C_1_1 += A_1_M * B_M_1;
+                C_2_1 += A_2_M * B_M_1;
+
+                C_0_2 += A_0_M * B_M_2;
+                C_1_2 += A_1_M * B_M_2;
+                C_2_2 += A_2_M * B_M_2;
+            }
+
+            C[i * n + j] = C_0_0;
+            if (i < (n - 1)) C[(i + 1) * n + j] = C_1_0;
+            if (i < (n - 2)) C[(i + 2) * n + j] = C_2_0;
+
+            if (j < (n - 1)) C[i * n + (j + 1)] = C_0_1;
+            if (i < (n - 1) && j < (n - 1)) C[(i + 1) * n + (j + 1)] = C_1_1;
+            if (i < (n - 2) && j < (n - 1)) C[(i + 2) * n + (j + 1)] = C_2_1;
+
+            if (j < (n - 2)) C[i * n + (j + 2)] = C_0_2;
+            if (i < (n - 1) && j < (n - 2)) C[(i + 1) * n + (j + 2)] = C_1_2;
+            if (i < (n - 2) && j < (n - 2)) C[(i + 2) * n + (j + 2)] = C_2_2;
+        }
+    }
+}
+
+void dgemm3_3x3_v2(const double* A, const double* B, double* C, const int n)
+{
+    int i = 0;
+    for (i = 0; i < n; i += 3)
+    {
+        int j = 0;
+        for (j = 0; j < n; j += 3)
+        {
+            register double C_0_0 = C[i * n + j];
+            register double C_1_0 = i < (n - 1) ? C[(i + 1) * n + j] : 0;
+            register double C_2_0 = i < (n - 2) ? C[(i + 2) * n + j] : 0;
+
+            register double C_0_1 = j < (n - 1) ? C[i * n + (j + 1)] : 0;
+            register double C_1_1 = (i < (n - 1)) && (j < (n - 1)) ? C[(i + 1) * n + (j + 1)] : 0;
+            register double C_2_1 = (i < (n - 2)) && (j < (n - 1)) ? C[(i + 2) * n + (j + 1)] : 0;
+
+            register double C_0_2 = j < (n - 2) ? C[i * n + (j + 2)] : 0;
+            register double C_1_2 = (i < (n - 1)) && (j < (n - 2)) ? C[(i + 1) * n + (j + 2)] : 0;
+            register double C_2_2 = (i < (n - 2)) && (j < (n - 2)) ? C[(i + 2) * n + (j + 2)] : 0;
+
+            int k = 0;
+            for (k = 0; k < n; k++)
+            {
+                register double A_0_M = A[i * n + k];
+                register double A_1_M = i < (n - 1) ? A[(i + 1) * n + k] : 0;
+                register double A_2_M = i < (n - 2) ? A[(i + 2) * n + k] : 0;
+
+                register double B_M = B[k * n + j];
+                C_0_0 += A_0_M * B_M;
+                C_1_0 += A_1_M * B_M;
+                C_2_0 += A_2_M * B_M;
+
+                B_M = j < (n - 1) ? B[k * n + (j + 1)] : 0;
+                C_0_1 += A_0_M * B_M;
+                C_1_1 += A_1_M * B_M;
+                C_2_1 += A_2_M * B_M;
+
+                B_M = j < (n - 2) ? B[k * n + (j + 2)] : 0;
+                C_0_2 += A_0_M * B_M;
+                C_1_2 += A_1_M * B_M;
+                C_2_2 += A_2_M * B_M;
+            }
+
+            C[i * n + j] = C_0_0;
+            if (i < (n - 1)) C[(i + 1) * n + j] = C_1_0;
+            if (i < (n - 2)) C[(i + 2) * n + j] = C_2_0;
+
+            if (j < (n - 1)) C[i * n + (j + 1)] = C_0_1;
+            if (i < (n - 1) && j < (n - 1)) C[(i + 1) * n + (j + 1)] = C_1_1;
+            if (i < (n - 2) && j < (n - 1)) C[(i + 2) * n + (j + 1)] = C_2_1;
+
+            if (j < (n - 2)) C[i * n + (j + 2)] = C_0_2;
+            if (i < (n - 1) && j < (n - 2)) C[(i + 1) * n + (j + 2)] = C_1_2;
+            if (i < (n - 2) && j < (n - 2)) C[(i + 2) * n + (j + 2)] = C_2_2;
         }
     }
 }
