@@ -390,9 +390,9 @@ int main(int argc, char *argv[])
 
     if ( randomize_matrix(A, curr_dim, curr_dim) ) return -1;
     if ( randomize_matrix(B, curr_dim, curr_dim) ) return -1;
-
+    
     double dur = t1 - t0;
-    C[i] = (double *)malloc(sizeof(double) * curr_dim * curr_dim);
+    double *C = (double *)malloc(sizeof(double) * curr_dim * curr_dim);
     t0 = get_sec();
 
     dgemm2_nif(A,B,C,curr_dim);
