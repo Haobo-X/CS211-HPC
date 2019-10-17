@@ -122,7 +122,7 @@ void dgemm2_2x2_v2(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm3(const double* A, const double* B, double* C, const int n)
+void dgemm3_3x4(const double* A, const double* B, double* C, const int n)
 {
     //block 3X4, 12 for C, 3 for A, 1 for B, total 16;
     int i = 0;
@@ -194,7 +194,7 @@ void dgemm3(const double* A, const double* B, double* C, const int n)
     }
 }
 
-void dgemm3_3x3(const double* A, const double* B, double* C, const int n)
+void dgemm3(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
     for (i = 0; i < n; i += 3)
@@ -619,7 +619,7 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
                 for (i1 = i; i1 < i + b; i1 += 3)
                 {
                     int j1 = 0;
-                    for (j1 = j; j1 < j + b; j1 += 4)
+                    for (j1 = j; j1 < j + b; j1 += 3)
                     {
                         register double C_0_0 = i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n ? C[i1 * n + j1] : 0;
                         register double C_1_0 = i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n ? C[(i1 + 1) * n + j1] : 0;
@@ -632,10 +632,6 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
                         register double C_0_2 = i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2) ? C[i1 * n + (j1 + 2)] : 0;
                         register double C_1_2 = i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2) ? C[(i1 + 1) * n + (j1 + 2)] : 0;
                         register double C_2_2 = i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2) ? C[(i1 + 2) * n + (j1 + 2)] : 0;
-
-                        register double C_0_3 = i1 < (i + b) && j1 < (j + b - 3) && i1 < n && j1 < (n - 3) ? C[i1 * n + (j1 + 3)] : 0;
-                        register double C_1_3 = i1 < (i + b - 1) && j1 < (j + b - 3) && i1 < (n - 1) && j1 < (n - 3) ? C[(i1 + 1) * n + (j1 + 3)] : 0;
-                        register double C_2_3 = i1 < (i + b - 2) && j1 < (j + b - 3) && i1 < (n - 2) && j1 < (n - 3) ? C[(i1 + 2) * n + (j1 + 3)] : 0;
 
                         int k1 = 0;
                         for (k1 = k; k1 < k + b; k1++)
@@ -658,11 +654,6 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
                             C_0_2 += A_0_M * B_M;
                             C_1_2 += A_1_M * B_M;
                             C_2_2 += A_2_M * B_M;
-
-                            B_M = k1 < (k + b) && j1 < (j + b - 3) && k1 < n && j1 < (n - 3) ? B[k1 * n + (j1 + 3)] : 0;
-                            C_0_3 += A_0_M * B_M;
-                            C_1_3 += A_1_M * B_M;
-                            C_2_3 += A_2_M * B_M;
                         }
 
                         if (i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n) C[i1 * n + j1] = C_0_0;
@@ -676,10 +667,6 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
                         if (i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2)) C[i1 * n + (j1 + 2)] = C_0_2;
                         if (i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2)) C[(i1 + 1) * n + (j1 + 2)] = C_1_2;
                         if (i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2)) C[(i1 + 2) * n + (j1 + 2)] = C_2_2;
-
-                        if (i1 < (i + b) && j1 < (j + b - 3) && i1 < n && j1 < (n - 3)) C[i1 * n + (j1 + 3)] = C_0_3;
-                        if (i1 < (i + b - 1) && j1 < (j + b - 3) && i1 < (n - 1) && j1 < (n - 3)) C[(i1 + 1) * n + (j1 + 3)] = C_1_3;
-                        if (i1 < (i + b - 2) && j1 < (j + b - 3) && i1 < (n - 2) && j1 < (n - 3)) C[(i1 + 2) * n + (j1 + 3)] = C_2_3;
                     }
                 }
             }
