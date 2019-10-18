@@ -637,9 +637,9 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
                         int j1 = 0;
                         for (j1 = j; j1 < j + b && j1 < n; j1++)
                         {
-                            register double B_0_M = j1 < (i + b) && k1 < (k + b) && j1 < n && k1 < n ? B[k1 * n + j1] : 0;
-                            register double B_1_M = j1 < (i + b) && k1 < (k + b - 1) && j1 < n && k1 < (n - 1) ? B[(k1 + 1) * n + j1] : 0;
-                            register double B_2_M = j1 < (i + b) && k1 < (k + b - 2) && j1 < n && k1 < (n - 2) ? B[(k1 + 2) * n + j1] : 0;
+                            register double B_0_M = j1 < (j + b) && k1 < (k + b) && j1 < n && k1 < n ? B[k1 * n + j1] : 0;
+                            register double B_1_M = j1 < (j + b) && k1 < (k + b - 1) && j1 < n && k1 < (n - 1) ? B[(k1 + 1) * n + j1] : 0;
+                            register double B_2_M = j1 < (j + b) && k1 < (k + b - 2) && j1 < n && k1 < (n - 2) ? B[(k1 + 2) * n + j1] : 0;
                             
                             if (i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n) C[i1 * n + j1] += A_0_0 * B_0_M + A_0_1 * B_1_M + A_0_2 * B_2_M;
                             if (i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n) C[(i1 + 1) * n + j1] += A_1_0 * B_0_M + A_1_1 * B_1_M + A_1_2 * B_2_M;
