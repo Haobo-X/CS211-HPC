@@ -757,24 +757,10 @@ void strassen(const double* A, const double* B, double* C, const int n)
 
 	if (n == 2)
 	{
-        register double A_0 = A[0] * 10000.0;
-        register double A_1 = A[1] * 10000.0;
-        register double A_2 = A[2] * 10000.0;
-        register double A_3 = A[3] * 10000.0;
-
-        register double B_0 = B[0] * 10000.0;
-        register double B_1 = B[1] * 10000.0;
-        register double B_2 = B[2] * 10000.0;
-        register double B_3 = B[3] * 10000.0;
-
-		C[0] = A_0 * B_0 + A_1 * B_2;
-        C[0] /= 100000000.0;
-		C[1] = A_0 * B_1 + A_1 * B_3;
-        C[1] /= 100000000.0;
-		C[2] = A_2 * B_0 + A_3 * B_2;
-        C[2] /= 100000000.0;
-		C[3] = A_2 * B_1 + A_3 * B_3;
-        C[3] /= 100000000.0;
+		C[0] = A[0] * B[0] + A[1] * B[2];
+		C[1] = A[0] * B[1] + A[1] * B[3];
+		C[2] = A[2] * B[0] + A[3] * B[2];
+		C[3] = A[2] * B[1] + A[3] * B[3];
 	}
 	else
 	{
@@ -786,8 +772,7 @@ void strassen(const double* A, const double* B, double* C, const int n)
 		for (i = 0; i < n / 2; i++)
 		{
 			int j = 0;
-			for (j = 0; j < n / 2; j++) 
-            {
+			for (j = 0; j < n / 2; j++) {
 				new_A_0_0[i * n / 2 + j] = A[i * n + j];
 				new_A_0_1[i * n / 2 + j] = A[i * n + (j + n / 2)];
 				new_A_1_0[i * n / 2 + j] = A[(i + n / 2) * n + j];
@@ -802,8 +787,7 @@ void strassen(const double* A, const double* B, double* C, const int n)
 
 		for (i = 0; i < n / 2; i++)
 		{
-			for (j = 0; j < n / 2; j++) 
-            {
+			for (j = 0; j < n / 2; j++) {
 				new_B_0_0[i * n / 2 + j] = B[i * n + j];
 				new_B_0_1[i * n / 2 + j] = B[i * n + (j + n / 2)];
 				new_B_1_0[i * n / 2 + j] = B[(i + n / 2) * n + j];
