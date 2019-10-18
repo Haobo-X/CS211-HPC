@@ -605,7 +605,7 @@ void bkji(const double* A, const double* B, double* C, const int n, const int b)
 }
 
 
-void optimal(const double* A, const double* B, double* C, const int n, const int b)
+void optimal2(const double* A, const double* B, double* C, const int n, const int b)
 {
     int k = 0;
     for (k = 0; k < n; k += b)
@@ -652,16 +652,16 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
     }
 }
 
-void optimal2(const double* A, const double* B, double* C, const int n, const int b)
+void optimal(const double* A, const double* B, double* C, const int n, const int b)
 {
-	int k = 0;
-	for (k = 0; k < n; k += b)
+	int i = 0;
+	for (i = 0; i < n; i += b)
 	{
-		int i = 0;
-		for (i = 0; i < n; i += b)
+		int j = 0;
+		for (j = 0; j < n; j += b)
 		{
-			int j = 0;
-			for (j = 0; j < n; j += b)
+			int k = 0;
+			for (k = 0; k < n; k += b)
 			{
 				int i1 = 0;
 				for (i1 = i; i1 < i + b; i1 += 3)
