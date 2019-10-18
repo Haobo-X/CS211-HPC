@@ -604,6 +604,7 @@ void bkji(const double* A, const double* B, double* C, const int n, const int b)
     }
 }
 
+
 void optimal(const double* A, const double* B, double* C, const int n, const int b)
 {
     int k = 0;
@@ -615,63 +616,111 @@ void optimal(const double* A, const double* B, double* C, const int n, const int
             int j = 0;
             for (j = 0; j < n; j += b)
             {
-                int i1 = 0;
-                for (i1 = i; i1 < i + b; i1 += 3)
+                int k1 = 0;
+                for (k1 = k; k1 < k + b && k1 < n; k1+=3)
                 {
-                    int j1 = 0;
-                    for (j1 = j; j1 < j + b; j1 += 3)
+                    int i1 = 0;
+                    for (i1 = i; i1 < i + b && i1 < n; i1+=3)
                     {
-                        register double C_0_0 = i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n ? C[i1 * n + j1] : 0;
-                        register double C_1_0 = i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n ? C[(i1 + 1) * n + j1] : 0;
-                        register double C_2_0 = i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n ? C[(i1 + 2) * n + j1] : 0;
+                        register double A_i1_k1 = A[i1 * n + k1];
+                        register double A_0_0 = i1 < (i + b) && k1 < (k + b) && i1 < n && k1 < n ? A[i1 * n + k1] : 0;
+                        register double A_1_0 = i1 < (i + b - 1) && k1 < (k + b) && i1 < (n - 1) && k1 < n ? A[(i1 + 1) * n + k1] : 0;
+                        register double A_2_0 = i1 < (i + b - 2) && k1 < (k + b) && i1 < (n - 2) && k1 < n ? A[(i1 + 2) * n + k1] : 0;
 
-                        register double C_0_1 = i1 < (i + b) && j1 < (j + b - 1) && i1 < n && j1 < (n - 1) ? C[i1 * n + (j1 + 1)] : 0;
-                        register double C_1_1 = i1 < (i + b - 1) && j1 < (j + b - 1) && i1 < (n - 1) && j1 < (n - 1) ? C[(i1 + 1) * n + (j1 + 1)] : 0;
-                        register double C_2_1 = i1 < (i + b - 2) && j1 < (j + b - 1) && i1 < (n - 2) && j1 < (n - 1) ? C[(i1 + 2) * n + (j1 + 1)] : 0;
+                        register double A_0_1 = i1 < (i + b) && k1 < (k + b - 1) && i1 < n && k1 < (n - 1) ? A[i1 * n + (k1 + 1)] : 0;
+                        register double A_1_1 = i1 < (i + b - 1) && k1 < (k + b - 1) && i1 < (n - 1) && k1 < (n - 1) ? A[(i1 + 1) * n + (k1 + 1)] : 0;
+                        register double A_2_1 = i1 < (i + b - 2) && k1 < (k + b - 1) && i1 < (n - 2) && k1 < (n - 1) ? A[(i1 + 2) * n + (k1 + 1)] : 0;
 
-                        register double C_0_2 = i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2) ? C[i1 * n + (j1 + 2)] : 0;
-                        register double C_1_2 = i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2) ? C[(i1 + 1) * n + (j1 + 2)] : 0;
-                        register double C_2_2 = i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2) ? C[(i1 + 2) * n + (j1 + 2)] : 0;
-
-                        int k1 = 0;
-                        for (k1 = k; k1 < k + b; k1++)
+                        register double A_0_2 = i1 < (i + b) && k1 < (k + b - 2) && i1 < n && k1 < (n - 2) ? A[i1 * n + (k1 + 2)] : 0;
+                        register double A_1_2 = i1 < (i + b - 1) && k1 < (k + b - 2) && i1 < (n - 1) && k1 < (n - 2) ? A[(i1 + 1) * n + (k1 + 2)] : 0;
+                        register double A_2_2 = i1 < (i + b - 2) && k1 < (k + b - 2) && i1 < (n - 2) && k1 < (n - 2) ? A[(i1 + 2) * n + (k1 + 2)] : 0;
+                        int j1 = 0;
+                        for (j1 = j; j1 < j + b && j1 < n; j1++)
                         {
-                            register double A_0_M = i1 < (i + b) && k1 < (k + b) && i1 < n && k1 < n ? A[i1 * n + k1] : 0;
-                            register double A_1_M = i1 < (i + b - 1) && k1 < (k + b) && i1 < (n - 1) && k1 < n ? A[(i1 + 1) * n + k1] : 0;
-                            register double A_2_M = i1 < (i + b - 2) && k1 < (k + b) && i1 < (n - 2) && k1 < n ? A[(i1 + 2) * n + k1] : 0;
-
-                            register double B_M = k1 < (k + b) && j1 < (j + b) && k1 < n && j1 < n ? B[k1 * n + j1] : 0;
-                            C_0_0 += A_0_M * B_M;
-                            C_1_0 += A_1_M * B_M;
-                            C_2_0 += A_2_M * B_M;
-
-                            B_M = k1 < (k + b) && j1 < (j + b - 1) && k1 < n && j1 < (n - 1) ? B[k1 * n + (j1 + 1)] : 0;
-                            C_0_1 += A_0_M * B_M;
-                            C_1_1 += A_1_M * B_M;
-                            C_2_1 += A_2_M * B_M;
-
-                            B_M = k1 < (k + b) && j1 < (j + b - 2) && k1 < n && j1 < (n - 2) ? B[k1 * n + (j1 + 2)] : 0;
-                            C_0_2 += A_0_M * B_M;
-                            C_1_2 += A_1_M * B_M;
-                            C_2_2 += A_2_M * B_M;
+                            register double B_0_M = j1 < (i + b) && k1 < (k + b) && j1 < n && k1 < n ? B[k1 * n + j1] : 0;
+                            register double B_1_M = j1 < (i + b) && k1 < (k + b - 1) && j1 < n && k1 < (n - 1) ? B[(k1 + 1) * n + j1] : 0;
+                            register double B_2_M = j1 < (i + b) && k1 < (k + b - 2) && j1 < n && k1 < (n - 2) ? B[(k1 + 2) * n + j1] : 0;
+                            
+                            if (i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n) C[i1 * n + j1] += A_0_0 * B_0_M + A_0_1 * B_1_M + A_0_2 * B_2_M;
+                            if (i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n) C[(i1 + 1) * n + j1] += A_1_0 * B_0_M + A_1_1 * B_1_M + A_1_2 * B_2_M;
+                            if (i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n) C[(i1 + 2) * n + j1] += A_2_0 * B_0_M + A_2_1 * B_1_M + A_2_2 * B_2_M;;
                         }
-
-                        if (i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n) C[i1 * n + j1] = C_0_0;
-                        if (i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n) C[(i1 + 1) * n + j1] = C_1_0;
-                        if (i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n) C[(i1 + 2) * n + j1] = C_2_0;
-
-                        if (i1 < (i + b) && j1 < (j + b - 1) && i1 < n && j1 < (n - 1)) C[i1 * n + (j1 + 1)] = C_0_1;
-                        if (i1 < (i + b - 1) && j1 < (j + b - 1) && i1 < (n - 1) && j1 < (n - 1)) C[(i1 + 1) * n + (j1 + 1)] = C_1_1;
-                        if (i1 < (i + b - 2) && j1 < (j + b - 1) && i1 < (n - 2) && j1 < (n - 1)) C[(i1 + 2) * n + (j1 + 1)] = C_2_1;
-
-                        if (i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2)) C[i1 * n + (j1 + 2)] = C_0_2;
-                        if (i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2)) C[(i1 + 1) * n + (j1 + 2)] = C_1_2;
-                        if (i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2)) C[(i1 + 2) * n + (j1 + 2)] = C_2_2;
                     }
                 }
             }
         }
     }
+}
+
+void optimal2(const double* A, const double* B, double* C, const int n, const int b)
+{
+	int k = 0;
+	for (k = 0; k < n; k += b)
+	{
+		int i = 0;
+		for (i = 0; i < n; i += b)
+		{
+			int j = 0;
+			for (j = 0; j < n; j += b)
+			{
+				int i1 = 0;
+				for (i1 = i; i1 < i + b; i1 += 3)
+				{
+					int j1 = 0;
+					for (j1 = j; j1 < j + b; j1 += 3)
+					{
+						register double C_0_0 = i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n ? C[i1 * n + j1] : 0;
+						register double C_1_0 = i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n ? C[(i1 + 1) * n + j1] : 0;
+						register double C_2_0 = i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n ? C[(i1 + 2) * n + j1] : 0;
+
+						register double C_0_1 = i1 < (i + b) && j1 < (j + b - 1) && i1 < n && j1 < (n - 1) ? C[i1 * n + (j1 + 1)] : 0;
+						register double C_1_1 = i1 < (i + b - 1) && j1 < (j + b - 1) && i1 < (n - 1) && j1 < (n - 1) ? C[(i1 + 1) * n + (j1 + 1)] : 0;
+						register double C_2_1 = i1 < (i + b - 2) && j1 < (j + b - 1) && i1 < (n - 2) && j1 < (n - 1) ? C[(i1 + 2) * n + (j1 + 1)] : 0;
+
+						register double C_0_2 = i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2) ? C[i1 * n + (j1 + 2)] : 0;
+						register double C_1_2 = i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2) ? C[(i1 + 1) * n + (j1 + 2)] : 0;
+						register double C_2_2 = i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2) ? C[(i1 + 2) * n + (j1 + 2)] : 0;
+
+						int k1 = 0;
+						for (k1 = k; k1 < k + b; k1++)
+						{
+							register double A_0_M = i1 < (i + b) && k1 < (k + b) && i1 < n && k1 < n ? A[i1 * n + k1] : 0;
+							register double A_1_M = i1 < (i + b - 1) && k1 < (k + b) && i1 < (n - 1) && k1 < n ? A[(i1 + 1) * n + k1] : 0;
+							register double A_2_M = i1 < (i + b - 2) && k1 < (k + b) && i1 < (n - 2) && k1 < n ? A[(i1 + 2) * n + k1] : 0;
+
+							register double B_M = k1 < (k + b) && j1 < (j + b) && k1 < n && j1 < n ? B[k1 * n + j1] : 0;
+							C_0_0 += A_0_M * B_M;
+							C_1_0 += A_1_M * B_M;
+							C_2_0 += A_2_M * B_M;
+
+							B_M = k1 < (k + b) && j1 < (j + b - 1) && k1 < n && j1 < (n - 1) ? B[k1 * n + (j1 + 1)] : 0;
+							C_0_1 += A_0_M * B_M;
+							C_1_1 += A_1_M * B_M;
+							C_2_1 += A_2_M * B_M;
+
+							B_M = k1 < (k + b) && j1 < (j + b - 2) && k1 < n && j1 < (n - 2) ? B[k1 * n + (j1 + 2)] : 0;
+							C_0_2 += A_0_M * B_M;
+							C_1_2 += A_1_M * B_M;
+							C_2_2 += A_2_M * B_M;
+
+						}
+
+						if (i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n) C[i1 * n + j1] = C_0_0;
+						if (i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n) C[(i1 + 1) * n + j1] = C_1_0;
+						if (i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n) C[(i1 + 2) * n + j1] = C_2_0;
+
+						if (i1 < (i + b) && j1 < (j + b - 1) && i1 < n && j1 < (n - 1)) C[i1 * n + (j1 + 1)] = C_0_1;
+						if (i1 < (i + b - 1) && j1 < (j + b - 1) && i1 < (n - 1) && j1 < (n - 1)) C[(i1 + 1) * n + (j1 + 1)] = C_1_1;
+						if (i1 < (i + b - 2) && j1 < (j + b - 1) && i1 < (n - 2) && j1 < (n - 1)) C[(i1 + 2) * n + (j1 + 1)] = C_2_1;
+
+						if (i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2)) C[i1 * n + (j1 + 2)] = C_0_2;
+						if (i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2)) C[(i1 + 1) * n + (j1 + 2)] = C_1_2;
+						if (i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2)) C[(i1 + 2) * n + (j1 + 2)] = C_2_2;
+					}
+				}
+			}
+		}
+	}
 }
 
 void addMatrix(const double* A, const double* B, double* C, const int n)
