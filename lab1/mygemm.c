@@ -751,138 +751,133 @@ void minusMatrix(const double* A, const double* B, double* C, const int n)
 
 void strassen(const double* A, const double* B, double* C, const int n)
 {
-    if ((n & (n - 1)) != 0)
-        return;
+    int i, j;
+	if ((n & (n - 1)) != 0)
+		return;
 
-    if (n == 2)
-    {
-        C[0] = A[0] * B[0] + A[1] * B[2];
-        C[1] = A[0] * B[1] + A[1] * B[3];
-        C[2] = A[2] * B[0] + A[3] * B[2];
-        C[3] = A[2] * B[1] + A[3] * B[3];
-    }
-    else
-    {
-        double* new_A_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_A_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_A_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_A_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+	if (n == 2)
+	{
+		C[0] = A[0] * B[0] + A[1] * B[2];
+		C[1] = A[0] * B[1] + A[1] * B[3];
+		C[2] = A[2] * B[0] + A[3] * B[2];
+		C[3] = A[2] * B[1] + A[3] * B[3];
+	}
+	else
+	{
+		double* new_A_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_A_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_A_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_A_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-        int i = 0;
-        for (i = 0; i < n / 2; i++) 
-        {
-            int j = 0;
-            for (j = 0; j < n / 2; j++) 
-            {
-                new_A_0_0[i * n / 2 + j] = A[i * n + j];
-                new_A_0_1[i * n / 2 + j] = A[i * n + (j + n / 2)];
-                new_A_1_0[i * n / 2 + j] = A[(i + n / 2) * n + j];
-                new_A_1_1[i * n / 2 + j] = A[(i + n / 2) * n + (j + n / 2)];
-            }
-        }
+		for (i = 0; i < n / 2; i++)
+		{
+			int j = 0;
+			for (j = 0; j < n / 2; j++) {
+				new_A_0_0[i * n / 2 + j] = A[i * n + j];
+				new_A_0_1[i * n / 2 + j] = A[i * n + (j + n / 2)];
+				new_A_1_0[i * n / 2 + j] = A[(i + n / 2) * n + j];
+				new_A_1_1[i * n / 2 + j] = A[(i + n / 2) * n + (j + n / 2)];
+			}
+		}
 
-        double* new_B_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_B_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_B_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_B_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_B_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_B_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_B_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_B_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-        for (i = 0; i < n / 2; i++) 
-        {
-            int j = 0;
-            for (j = 0; j < n / 2; j++) 
-            {
-                new_B_0_0[i * n / 2 + j] = B[i * n + j];
-                new_B_0_1[i * n / 2 + j] = B[i * n + (j + n / 2)];
-                new_B_1_0[i * n / 2 + j] = B[(i + n / 2) * n + j];
-                new_B_1_1[i * n / 2 + j] = B[(i + n / 2) * n + (j + n / 2)];
-            }
-        }
+		for (i = 0; i < n / 2; i++)
+		{
+			for (j = 0; j < n / 2; j++) {
+				new_B_0_0[i * n / 2 + j] = B[i * n + j];
+				new_B_0_1[i * n / 2 + j] = B[i * n + (j + n / 2)];
+				new_B_1_0[i * n / 2 + j] = B[(i + n / 2) * n + j];
+				new_B_1_1[i * n / 2 + j] = B[(i + n / 2) * n + (j + n / 2)];
+			}
+		}
 
-        double* new_C_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_C_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_C_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* new_C_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_C_0_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_C_0_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_C_1_0 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* new_C_1_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-        double* M_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* M_2 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* M_3 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* M_4 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* M_5 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* M_6 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* M_7 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_1 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_2 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_3 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_4 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_5 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_6 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* M_7 = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-        double* LEFT_PLUS = (double*)malloc(sizeof(double) * n / 2 * n / 2);
-        double* RIGHT_PLUS = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* LEFT_PLUS = (double*)malloc(sizeof(double) * n / 2 * n / 2);
+		double* RIGHT_PLUS = (double*)malloc(sizeof(double) * n / 2 * n / 2);
 
-        addMatrix(new_A_0_0, new_A_1_1, LEFT_PLUS, n / 2);
-        addMatrix(new_B_0_0, new_B_1_1, RIGHT_PLUS, n / 2);
-        strassen(LEFT_PLUS, RIGHT_PLUS, M_1, n / 2);
+		addMatrix(new_A_0_0, new_A_1_1, LEFT_PLUS, n / 2);
+		addMatrix(new_B_0_0, new_B_1_1, RIGHT_PLUS, n / 2);
+		strassen(LEFT_PLUS, RIGHT_PLUS, M_1, n / 2);
 
-        addMatrix(new_A_1_0, new_A_1_1, LEFT_PLUS, n / 2);
-        strassen(LEFT_PLUS, new_B_0_0, M_2, n / 2);
+		addMatrix(new_A_1_0, new_A_1_1, LEFT_PLUS, n / 2);
+		strassen(LEFT_PLUS, new_B_0_0, M_2, n / 2);
 
-        minusMatrix(new_B_0_1, new_B_1_1, RIGHT_PLUS, n / 2);
-        strassen(new_A_0_0, RIGHT_PLUS, M_3, n / 2);
+		minusMatrix(new_B_0_1, new_B_1_1, RIGHT_PLUS, n / 2);
+		strassen(new_A_0_0, RIGHT_PLUS, M_3, n / 2);
 
-        minusMatrix(new_B_1_0, new_B_0_0, RIGHT_PLUS, n / 2);
-        strassen(new_A_1_1, RIGHT_PLUS, M_4, n / 2);
+		minusMatrix(new_B_1_0, new_B_0_0, RIGHT_PLUS, n / 2);
+		strassen(new_A_1_1, RIGHT_PLUS, M_4, n / 2);
 
-        addMatrix(new_A_0_0, new_A_0_1, LEFT_PLUS, n / 2);
-        strassen(LEFT_PLUS, new_B_1_1, M_5, n / 2);
+		addMatrix(new_A_0_0, new_A_0_1, LEFT_PLUS, n / 2);
+		strassen(LEFT_PLUS, new_B_1_1, M_5, n / 2);
 
-        minusMatrix(new_A_1_0, new_A_0_0, LEFT_PLUS, n / 2);
-        addMatrix(new_B_0_0, new_B_0_1, RIGHT_PLUS, n / 2);
-        strassen(LEFT_PLUS, RIGHT_PLUS, M_6, n / 2);
+		minusMatrix(new_A_1_0, new_A_0_0, LEFT_PLUS, n / 2);
+		addMatrix(new_B_0_0, new_B_0_1, RIGHT_PLUS, n / 2);
+		strassen(LEFT_PLUS, RIGHT_PLUS, M_6, n / 2);
 
-        minusMatrix(new_A_0_1, new_A_1_1, LEFT_PLUS, n / 2);
-        addMatrix(new_B_1_0, new_B_1_1, RIGHT_PLUS, n / 2);
-        strassen(LEFT_PLUS, RIGHT_PLUS, M_7, n / 2);
+		minusMatrix(new_A_0_1, new_A_1_1, LEFT_PLUS, n / 2);
+		addMatrix(new_B_1_0, new_B_1_1, RIGHT_PLUS, n / 2);
+		strassen(LEFT_PLUS, RIGHT_PLUS, M_7, n / 2);
 
-        addMatrix(M_1, M_4, LEFT_PLUS, n / 2);
-        addMatrix(LEFT_PLUS, M_7, RIGHT_PLUS, n / 2);
-        minusMatrix(RIGHT_PLUS, M_5, new_C_0_0, n / 2);
+		addMatrix(M_1, M_4, LEFT_PLUS, n / 2);
+		addMatrix(LEFT_PLUS, M_7, RIGHT_PLUS, n / 2);
+		minusMatrix(RIGHT_PLUS, M_5, new_C_0_0, n / 2);
 
-        addMatrix(M_3, M_5, new_C_0_1, n / 2);
+		addMatrix(M_3, M_5, new_C_0_1, n / 2);
 
-        addMatrix(M_2, M_4, new_C_1_0, n / 2);
+		addMatrix(M_2, M_4, new_C_1_0, n / 2);
 
-        addMatrix(M_1, M_3, LEFT_PLUS, n / 2);
-        addMatrix(LEFT_PLUS, M_6, RIGHT_PLUS, n / 2);
-        minusMatrix(RIGHT_PLUS, M_2, new_C_1_1, n / 2);
+		addMatrix(M_1, M_3, LEFT_PLUS, n / 2);
+		addMatrix(LEFT_PLUS, M_6, RIGHT_PLUS, n / 2);
+		minusMatrix(RIGHT_PLUS, M_2, new_C_1_1, n / 2);
 
+		for (i = 0; i < n / 2; i++)
+		{
+			for (j = 0; j < n / 2; j++)
+			{
+				C[i * n + j] = new_C_0_0[i * n / 2 + j];
+				C[i * n + (j + n / 2)] = new_C_0_1[i * n / 2 + j];
+				C[(i + n / 2) * n + j] = new_C_1_0[i * n / 2 + j];
+				C[(i + n / 2) * n + (j + n / 2)] = new_C_1_1[i * n / 2 + j];
+			}
+		}
 
-        for (i = 0; i < n / 2; i++) 
-        {
-            int j = 0;
-            for (j = 0; j < n / 2; j++) 
-            {
-                C[i * n + j] = new_C_0_0[i * n / 2 + j];
-                C[i * n + (j + n / 2)] = new_C_0_1[i * n / 2 + j];
-                C[(i + n / 2) * n + j] = new_C_1_0[i * n / 2 + j];
-                C[(i + n / 2) * n + (j + n / 2)] = new_C_1_1[i * n / 2 + j];
-            }
-        }
-
-        free(new_A_0_0);
-        free(new_A_0_1);
-        free(new_A_1_0);
-        free(new_A_1_1);
-        free(new_B_0_0);
-        free(new_B_0_1);
-        free(new_B_1_0);
-        free(new_B_1_1);
-        free(new_C_0_0);
-        free(new_C_0_1);
-        free(new_C_1_0);
-        free(new_C_1_1);
-        free(M_1);
-        free(M_2);
-        free(M_3);
-        free(M_4);
-        free(M_5);
-        free(M_6);
-        free(M_7);
-        free(LEFT_PLUS);
-        free(RIGHT_PLUS);
-    }
+		free(new_A_0_0);
+		free(new_A_0_1);
+		free(new_A_1_0);
+		free(new_A_1_1);
+		free(new_B_0_0);
+		free(new_B_0_1);
+		free(new_B_1_0);
+		free(new_B_1_1);
+		free(new_C_0_0);
+		free(new_C_0_1);
+		free(new_C_1_0);
+		free(new_C_1_1);
+		free(M_1);
+		free(M_2);
+		free(M_3);
+		free(M_4);
+		free(M_5);
+		free(M_6);
+		free(M_7);
+		free(LEFT_PLUS);
+		free(RIGHT_PLUS);
+	}
 }
