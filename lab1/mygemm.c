@@ -786,7 +786,8 @@ void strassen(const double* A, const double* B, double* C, const int n)
 		for (i = 0; i < n / 2; i++)
 		{
 			int j = 0;
-			for (j = 0; j < n / 2; j++) {
+			for (j = 0; j < n / 2; j++) 
+            {
 				new_A_0_0[i * n / 2 + j] = A[i * n + j];
 				new_A_0_1[i * n / 2 + j] = A[i * n + (j + n / 2)];
 				new_A_1_0[i * n / 2 + j] = A[(i + n / 2) * n + j];
@@ -801,7 +802,8 @@ void strassen(const double* A, const double* B, double* C, const int n)
 
 		for (i = 0; i < n / 2; i++)
 		{
-			for (j = 0; j < n / 2; j++) {
+			for (j = 0; j < n / 2; j++) 
+            {
 				new_B_0_0[i * n / 2 + j] = B[i * n + j];
 				new_B_0_1[i * n / 2 + j] = B[i * n + (j + n / 2)];
 				new_B_1_0[i * n / 2 + j] = B[(i + n / 2) * n + j];
