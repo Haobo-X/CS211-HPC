@@ -1,0 +1,4 @@
+./data.sh: line 7: ./reg_reuse: No such file or directory
+
+*********** Cache reuse - Part 4. ***********
+O0 : O1 : O2 : O3 : 
