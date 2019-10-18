@@ -757,24 +757,24 @@ void strassen(const double* A, const double* B, double* C, const int n)
 
 	if (n == 2)
 	{
-        register double A_0 = A[0] * 100.0;
-        register double A_1 = A[1] * 100.0;
-        register double A_2 = A[2] * 100.0;
-        register double A_3 = A[3] * 100.0;
+        register double A_0 = A[0] * 10000.0;
+        register double A_1 = A[1] * 10000.0;
+        register double A_2 = A[2] * 10000.0;
+        register double A_3 = A[3] * 10000.0;
 
-        register double B_0 = B[0] * 100.0;
-        register double B_1 = B[1] * 100.0;
-        register double B_2 = B[2] * 100.0;
-        register double B_3 = B[3] * 100.0;
+        register double B_0 = B[0] * 10000.0;
+        register double B_1 = B[1] * 10000.0;
+        register double B_2 = B[2] * 10000.0;
+        register double B_3 = B[3] * 10000.0;
 
 		C[0] = A_0 * B_0 + A_1 * B_2;
-        C[0] /= 10000.0;
+        C[0] /= 100000000.0;
 		C[1] = A_0 * B_1 + A_1 * B_3;
-        C[1] /= 10000.0;
+        C[1] /= 100000000.0;
 		C[2] = A_2 * B_0 + A_3 * B_2;
-        C[2] /= 10000.0;
+        C[2] /= 100000000.0;
 		C[3] = A_2 * B_1 + A_3 * B_3;
-        C[3] /= 10000.0;
+        C[3] /= 100000000.0;
 	}
 	else
 	{
