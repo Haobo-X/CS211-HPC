@@ -1,53 +1,66 @@
 
-*********** Cache reuse ***********
-ijk -252: elapsed time is 38.85596 second(s).
-jik -252: elapsed time is 20.22308 second(s).
-kij -252: elapsed time is 16.33723 second(s).
-ikj -252: elapsed time is 15.98551 second(s).
-jki -252: elapsed time is 62.60966 second(s).
-kji -252: elapsed time is 62.38922 second(s).
-bijk-252: elapsed time is 16.78587 second(s).
-bjik-252: elapsed time is 17.73311 second(s).
-bkij-252: elapsed time is 14.39866 second(s).
-bikj-252: elapsed time is 18.52087 second(s).
-bjki-252: elapsed time is 57.73916 second(s).
-bkji-252: elapsed time is 58.07159 second(s).
-ijk -255: elapsed time is 38.79316 second(s).
-jik -255: elapsed time is 20.18617 second(s).
-kij -255: elapsed time is 16.28411 second(s).
-ikj -255: elapsed time is 16.02940 second(s).
-jki -255: elapsed time is 61.79053 second(s).
-kji -255: elapsed time is 62.27554 second(s).
-bijk-255: elapsed time is 16.68829 second(s).
-bjik-255: elapsed time is 17.19484 second(s).
-bkij-255: elapsed time is 14.30744 second(s).
-bikj-255: elapsed time is 18.69217 second(s).
-bjki-255: elapsed time is 58.22394 second(s).
-bkji-255: elapsed time is 57.93217 second(s).
-ijk -258: elapsed time is 38.77980 second(s).
-jik -258: elapsed time is 20.20330 second(s).
-kij -258: elapsed time is 16.30672 second(s).
-ikj -258: elapsed time is 16.03182 second(s).
-jki -258: elapsed time is 62.23706 second(s).
-kji -258: elapsed time is 62.52700 second(s).
-bijk-258: elapsed time is 17.15560 second(s).
-bjik-258: elapsed time is 17.24973 second(s).
-bkij-258: elapsed time is 14.20519 second(s).
-bikj-258: elapsed time is 18.55394 second(s).
-bjki-258: elapsed time is 59.39466 second(s).
-bkji-258: elapsed time is 59.72371 second(s).
-ijk -261: elapsed time is 38.84541 second(s).
-jik -261: elapsed time is 20.24747 second(s).
-kij -261: elapsed time is 16.33628 second(s).
-ikj -261: elapsed time is 16.05864 second(s).
-jki -261: elapsed time is 62.35565 second(s).
-kji -261: elapsed time is 62.20684 second(s).
-bijk-261: elapsed time is 17.98686 second(s).
-bjik-261: elapsed time is 17.84328 second(s).
-bkij-261: elapsed time is 14.37671 second(s).
-bikj-261: elapsed time is 18.45451 second(s).
-bjki-261: elapsed time is 60.64761 second(s).
-bkji-261: elapsed time is 60.36758 second(s).
-
 *********** Cache reuse - Part 4. ***********
-O0 : O1 : O2 : O3 : 
+O0 : elapsed time is 11.14364 second(s).
+elapsed time is 11.13933 second(s).
+elapsed time is 11.08697 second(s).
+elapsed time is 11.08138 second(s).
+elapsed time is 11.06196 second(s).
+elapsed time is 11.04904 second(s).
+elapsed time is 11.00969 second(s).
+elapsed time is 11.02447 second(s).
+elapsed time is 10.99907 second(s).
+elapsed time is 11.05450 second(s).
+elapsed time is 11.04935 second(s).
+elapsed time is 11.13654 second(s).
+elapsed time is 11.16535 second(s).
+elapsed time is 11.16675 second(s).
+elapsed time is 11.18323 second(s).
+elapsed time is 11.23588 second(s).
+O1 : elapsed time is 11.15161 second(s).
+elapsed time is 11.12624 second(s).
+elapsed time is 11.08735 second(s).
+elapsed time is 11.06780 second(s).
+elapsed time is 11.05605 second(s).
+elapsed time is 11.04294 second(s).
+elapsed time is 11.01578 second(s).
+elapsed time is 11.03353 second(s).
+elapsed time is 11.14578 second(s).
+elapsed time is 11.08707 second(s).
+elapsed time is 11.08178 second(s).
+elapsed time is 11.16077 second(s).
+elapsed time is 11.19021 second(s).
+elapsed time is 11.20034 second(s).
+elapsed time is 11.22701 second(s).
+elapsed time is 11.29537 second(s).
+O2 : elapsed time is 11.13151 second(s).
+elapsed time is 11.11432 second(s).
+elapsed time is 11.05859 second(s).
+elapsed time is 11.07063 second(s).
+elapsed time is 11.07835 second(s).
+elapsed time is 11.03199 second(s).
+elapsed time is 11.03402 second(s).
+elapsed time is 11.05343 second(s).
+elapsed time is 11.01009 second(s).
+elapsed time is 11.08804 second(s).
+elapsed time is 11.04234 second(s).
+elapsed time is 11.13782 second(s).
+elapsed time is 11.16059 second(s).
+elapsed time is 11.15325 second(s).
+elapsed time is 11.19463 second(s).
+elapsed time is 11.23765 second(s).
+O3 : elapsed time is 11.15263 second(s).
+elapsed time is 11.11523 second(s).
+elapsed time is 10.99268 second(s).
+elapsed time is 11.06700 second(s).
+elapsed time is 11.05968 second(s).
+elapsed time is 11.04362 second(s).
+elapsed time is 11.01687 second(s).
+elapsed time is 11.03217 second(s).
+elapsed time is 11.01137 second(s).
+elapsed time is 11.06090 second(s).
+elapsed time is 11.05597 second(s).
+elapsed time is 11.14521 second(s).
+elapsed time is 11.16346 second(s).
+elapsed time is 11.17904 second(s).
+elapsed time is 11.19180 second(s).
+elapsed time is 11.24689 second(s).
