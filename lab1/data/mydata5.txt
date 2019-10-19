@@ -1,0 +1,87 @@
+
+*********** Register Reuse ***********
+incorrect. -17279.399700 --17240.779700 ,bias = 38.620000
+error detected at function strassen, matrix size = 64.
+incorrect. 20631.981500 -20670.601500 ,bias = 38.620000
+error detected at function strassen, matrix size = 128.
+incorrect. 32366.794200 -32405.414200 ,bias = 38.620000
+error detected at function strassen, matrix size = 256.
+incorrect. -27622.741900 --27633.501900 ,bias = 10.760000
+error detected at function strassen, matrix size = 512.
+incorrect. -194176.261900 --194226.141900 ,bias = 49.880000
+error detected at function strassen, matrix size = 1024.
+dgemm0 -   64: elapsed time is  0.00198 second(s).
+dgemm0 -  128: elapsed time is  0.01400 second(s).
+dgemm0 -  256: elapsed time is  0.35381 second(s).
+dgemm0 -  512: elapsed time is  4.08198 second(s).
+dgemm0 - 1024: elapsed time is 35.12634 second(s).
+dgemm1 -   64: elapsed time is  0.00052 second(s).
+dgemm1 -  128: elapsed time is  0.00460 second(s).
+dgemm1 -  256: elapsed time is  0.03815 second(s).
+dgemm1 -  512: elapsed time is  0.99786 second(s).
+dgemm1 - 1024: elapsed time is 14.44310 second(s).
+dgemm2 -   64: elapsed time is  0.00024 second(s).
+dgemm2 -  128: elapsed time is  0.00228 second(s).
+dgemm2 -  256: elapsed time is  0.01909 second(s).
+dgemm2 -  512: elapsed time is  0.27328 second(s).
+dgemm2 - 1024: elapsed time is  3.29029 second(s).
+dgemm3 -   64: elapsed time is  0.00020 second(s).
+dgemm3 -  128: elapsed time is  0.00152 second(s).
+dgemm3 -  256: elapsed time is  0.01242 second(s).
+dgemm3 -  512: elapsed time is  0.15572 second(s).
+dgemm3 - 1024: elapsed time is  1.86981 second(s).
+dgemm3_3x4 -   64: elapsed time is  0.00015 second(s).
+dgemm3_3x4 -  128: elapsed time is  0.00138 second(s).
+dgemm3_3x4 -  256: elapsed time is  0.01163 second(s).
+dgemm3_3x4 -  512: elapsed time is  0.15075 second(s).
+dgemm3_3x4 - 1024: elapsed time is  1.70559 second(s).
+dgemm3_3x3_v2 -   64: elapsed time is  0.00015 second(s).
+dgemm3_3x3_v2 -  128: elapsed time is  0.00157 second(s).
+dgemm3_3x3_v2 -  256: elapsed time is  0.01155 second(s).
+dgemm3_3x3_v2 -  512: elapsed time is  0.14859 second(s).
+dgemm3_3x3_v2 - 1024: elapsed time is  1.78304 second(s).
+strassen -   64: elapsed time is  0.00482 second(s).
+strassen -  128: elapsed time is  0.03344 second(s).
+strassen -  256: elapsed time is  0.22343 second(s).
+strassen -  512: elapsed time is  1.44139 second(s).
+strassen - 1024: elapsed time is 10.09701 second(s).
+
+*********** Cache reuse ***********
+ijk : elapsed time is 38.25243 second(s).
+jik : elapsed time is 20.42054 second(s).
+kij : elapsed time is 15.89138 second(s).
+ikj : elapsed time is 16.14341 second(s).
+jki : elapsed time is 62.81131 second(s).
+kji : elapsed time is 62.26538 second(s).
+bijk: elapsed time is 32.11610 second(s).
+bjik: elapsed time is 31.67575 second(s).
+bkij: elapsed time is 27.26097 second(s).
+bikj: elapsed time is 27.47099 second(s).
+bjki: elapsed time is 31.80207 second(s).
+bkji: elapsed time is 33.91685 second(s).
+
+*********** Cache reuse - Part 4. ***********
+O0 : elapsed time is 11.02041 second(s).
+O1 : elapsed time is 11.00804 second(s).
+O2 : elapsed time is 10.96762 second(s).
+O3 : elapsed time is 10.98466 second(s).
+
+*********** Cache reuse ***********
+ijk : elapsed time is 38.90503 second(s).
+jik : elapsed time is 20.41147 second(s).
+kij : elapsed time is 16.45744 second(s).
+ikj : elapsed time is 16.29789 second(s).
+jki : elapsed time is 62.94625 second(s).
+kji : elapsed time is 62.85545 second(s).
+bijk: elapsed time is 28.87479 second(s).
+bjik: elapsed time is 30.95137 second(s).
+bkij: elapsed time is 25.31741 second(s).
+bikj: elapsed time is 26.32584 second(s).
+bjki: elapsed time is 29.22342 second(s).
+bkji: elapsed time is 31.52042 second(s).
+
+*********** Cache reuse - Part 4. ***********
+O0 : elapsed time is 15.29839 second(s).
+O1 : elapsed time is 15.07463 second(s).
+O2 : elapsed time is 15.72416 second(s).
+O3 : elapsed time is 15.23032 second(s).
