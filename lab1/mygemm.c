@@ -684,6 +684,7 @@ void optimal3(const double* A, const double* B, double* C, const int n, const in
 						register double C_1_2 = i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2) ? C[(i1 + 1) * n + (j1 + 2)] : 0;
 						register double C_2_2 = i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2) ? C[(i1 + 2) * n + (j1 + 2)] : 0;
 
+                        int k1 = 0;
                         for (k1 = k; k1 < nk; k1 += 3) {
                             for (int l = 0; l < 3; l++) {
                                 int ha = i1 * n + k1 + l;
