@@ -5,6 +5,7 @@ void dgemm2_2x2_v2(const double* A, const double* B, double* C, const int n);
 void dgemm3(const double *A, const double *B, double *C, const int n);
 void dgemm3_3x4(const double* A, const double* B, double* C, const int n);
 void dgemm3_3x3_v2(const double* A, const double* B, double* C, const int n);
+void dgemm3_3x4_nocheck(const double* A, const double* B, double* C, const int n);
 void ijk(const double *A, const double *B, double *C, const int n);
 void jik(const double *A, const double *B, double *C, const int n);
 void kij(const double *A, const double *B, double *C, const int n);

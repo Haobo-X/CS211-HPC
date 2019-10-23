@@ -194,6 +194,78 @@ void dgemm3_3x4(const double* A, const double* B, double* C, const int n)
     }
 }
 
+void dgemm3_3x4_nocheck(const double* A, const double* B, double* C, const int n)
+{
+    //block 3X4, 12 for C, 3 for A, 1 for B, total 16;
+    int i = 0;
+    for (i = 0; i < n; i += 3)
+    {
+        int j = 0;
+        for (j = 0; j < n; j += 4)
+        {
+            register double C_0_0 = C[i * n + j];
+            register double C_1_0 = C[(i + 1) * n + j];
+            register double C_2_0 = C[(i + 2) * n + j];
+
+            register double C_0_1 = C[i * n + (j + 1)];
+            register double C_1_1 = C[(i + 1) * n + (j + 1)];
+            register double C_2_1 = C[(i + 2) * n + (j + 1)];
+
+            register double C_0_2 = C[i * n + (j + 2)];
+            register double C_1_2 = C[(i + 1) * n + (j + 2)];
+            register double C_2_2 = C[(i + 2) * n + (j + 2)];
+
+            register double C_0_3 = C[i * n + (j + 3)];
+            register double C_1_3 = C[(i + 1) * n + (j + 3)];
+            register double C_2_3 = C[(i + 2) * n + (j + 3)];
+
+            int k = 0;
+            for (k = 0; k < n; k++)
+            {
+                register double A_0_M = A[i * n + k];
+                register double A_1_M = A[(i + 1) * n + k];
+                register double A_2_M = A[(i + 2) * n + k];
+
+                register double B_M = B[k * n + j];
+                C_0_0 += A_0_M * B_M;
+                C_1_0 += A_1_M * B_M;
+                C_2_0 += A_2_M * B_M;
+
+                B_M = B[k * n + (j + 1)];
+                C_0_1 += A_0_M * B_M;
+                C_1_1 += A_1_M * B_M;
+                C_2_1 += A_2_M * B_M;
+
+                B_M = B[k * n + (j + 2)];
+                C_0_2 += A_0_M * B_M;
+                C_1_2 += A_1_M * B_M;
+                C_2_2 += A_2_M * B_M;
+
+                B_M = B[k * n + (j + 3)];
+                C_0_3 += A_0_M * B_M;
+                C_1_3 += A_1_M * B_M;
+                C_2_3 += A_2_M * B_M;
+            }
+
+            C[i * n + j] = C_0_0;
+            C[(i + 1) * n + j] = C_1_0;
+            C[(i + 2) * n + j] = C_2_0;
+
+            C[i * n + (j + 1)] = C_0_1;
+            C[(i + 1) * n + (j + 1)] = C_1_1;
+            C[(i + 2) * n + (j + 1)] = C_2_1;
+
+            C[i * n + (j + 2)] = C_0_2;
+            C[(i + 1) * n + (j + 2)] = C_1_2;
+            C[(i + 2) * n + (j + 2)] = C_2_2;
+
+            C[i * n + (j + 3)] = C_0_3;
+            C[(i + 1) * n + (j + 3)] = C_1_3;
+            C[(i + 2) * n + (j + 3)] = C_2_3;
+        }
+    }
+}
+
 void dgemm3(const double* A, const double* B, double* C, const int n)
 {
     int i = 0;
