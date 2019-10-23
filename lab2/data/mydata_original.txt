@@ -1,0 +1,20 @@
+ n = 1002 
+Elapsed time, MKL LAPACK: 0.113705 seconds
+Elapsed time, naive LU: 3.668702 seconds
+Elapsed time, block LU: 1.296701 seconds
+ n = 2001 
+Elapsed time, MKL LAPACK: 0.542163 seconds
+Elapsed time, naive LU: 30.744550 seconds
+Elapsed time, block LU: 7.758978 seconds
+ n = 3000 
+Elapsed time, MKL LAPACK: 1.628754 seconds
+Elapsed time, naive LU: 100.671873 seconds
+Elapsed time, block LU: 23.866773 seconds
+ n = 4002 
+Elapsed time, MKL LAPACK: 3.525585 seconds
+Elapsed time, naive LU: 238.748902 seconds
+Elapsed time, block LU: 54.794360 seconds
+ n = 5001 
+Elapsed time, MKL LAPACK: 6.638058 seconds
+Elapsed time, naive LU: 469.614821 seconds
+Elapsed time, block LU: 103.458482 seconds

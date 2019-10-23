@@ -652,6 +652,81 @@ void optimal2(const double* A, const double* B, double* C, const int n, const in
     }
 }
 
+void optimal3(const double* A, const double* B, double* C, const int n, const int b)
+{
+	int i = 0;
+	for (i = 0; i < n; i += b)
+	{
+		int j = 0;
+		for (j = 0; j < n; j += b)
+		{
+			int k = 0;
+			for (k = 0; k < n; k += b)
+			{
+				int i1 = 0;
+                int ni = i + b > n ? n : i + b;
+                int nj = j + b > n ? n : j + b;
+                int nk = k + b > n ? n : k + b;
+				for (i1 = i; i1 < ni; i1 += 3)
+				{
+					int j1 = 0;
+					for (j1 = j; j1 < nj; j1 += 3)
+					{
+                        register double C_0_0 = i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n ? C[i1 * n + j1] : 0;
+						register double C_1_0 = i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n ? C[(i1 + 1) * n + j1] : 0;
+						register double C_2_0 = i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n ? C[(i1 + 2) * n + j1] : 0;
+
+						register double C_0_1 = i1 < (i + b) && j1 < (j + b - 1) && i1 < n && j1 < (n - 1) ? C[i1 * n + (j1 + 1)] : 0;
+						register double C_1_1 = i1 < (i + b - 1) && j1 < (j + b - 1) && i1 < (n - 1) && j1 < (n - 1) ? C[(i1 + 1) * n + (j1 + 1)] : 0;
+						register double C_2_1 = i1 < (i + b - 2) && j1 < (j + b - 1) && i1 < (n - 2) && j1 < (n - 1) ? C[(i1 + 2) * n + (j1 + 1)] : 0;
+
+						register double C_0_2 = i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2) ? C[i1 * n + (j1 + 2)] : 0;
+						register double C_1_2 = i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2) ? C[(i1 + 1) * n + (j1 + 2)] : 0;
+						register double C_2_2 = i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2) ? C[(i1 + 2) * n + (j1 + 2)] : 0;
+
+                        for (k1 = k; k1 < nk; k1 += 3) {
+                            for (int l = 0; l < 3; l++) {
+                                int ha = i1 * n + k1 + l;
+                                int hha = ha + n;
+                                int hhha = hha + n;
+                                int hb = k1 * n + j1 + l * n;
+                                register double a0 = A[ha];
+                                register double a1 = A[hha];
+                                register double a2 = A[hhha];
+                                register double b0 = B[hb];
+                                register double b1 = B[hb + 1];
+                                register double b2 = B[hb + 2];
+
+                                C_0_0 += a0 * b0;
+                                C_0_1 += a0 * b1;
+                                C_0_2 += a0 * b2;
+                                C_1_0 += a1 * b0;
+                                C_1_1 += a1 * b1;
+                                C_1_2 += a1 * b2;
+                                C_2_0 += a2 * b0;
+                                C_2_1 += a2 * b1;
+                                C_2_2 += a2 * b2;
+                            }
+                        }
+                        if (i1 < (i + b) && j1 < (j + b) && i1 < n && j1 < n) C[i1 * n + j1] = C_0_0;
+						if (i1 < (i + b - 1) && j1 < (j + b) && i1 < (n - 1) && j1 < n) C[(i1 + 1) * n + j1] = C_1_0;
+						if (i1 < (i + b - 2) && j1 < (j + b) && i1 < (n - 2) && j1 < n) C[(i1 + 2) * n + j1] = C_2_0;
+
+						if (i1 < (i + b) && j1 < (j + b - 1) && i1 < n && j1 < (n - 1)) C[i1 * n + (j1 + 1)] = C_0_1;
+						if (i1 < (i + b - 1) && j1 < (j + b - 1) && i1 < (n - 1) && j1 < (n - 1)) C[(i1 + 1) * n + (j1 + 1)] = C_1_1;
+						if (i1 < (i + b - 2) && j1 < (j + b - 1) && i1 < (n - 2) && j1 < (n - 1)) C[(i1 + 2) * n + (j1 + 1)] = C_2_1;
+
+						if (i1 < (i + b) && j1 < (j + b - 2) && i1 < n && j1 < (n - 2)) C[i1 * n + (j1 + 2)] = C_0_2;
+						if (i1 < (i + b - 1) && j1 < (j + b - 2) && i1 < (n - 1) && j1 < (n - 2)) C[(i1 + 1) * n + (j1 + 2)] = C_1_2;
+						if (i1 < (i + b - 2) && j1 < (j + b - 2) && i1 < (n - 2) && j1 < (n - 2)) C[(i1 + 2) * n + (j1 + 2)] = C_2_2;
+					
+					}
+				}
+			}
+		}
+	}
+}
+
 void optimal(const double* A, const double* B, double* C, const int n, const int b)
 {
 	int i = 0;

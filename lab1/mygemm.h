@@ -17,5 +17,5 @@ void bkij(const double *A, const double *B, double *C, const int n, const int b)
 void bikj(const double *A, const double *B, double *C, const int n, const int b);
 void bjki(const double *A, const double *B, double *C, const int n, const int b);
 void bkji(const double *A, const double *B, double *C, const int n, const int b);
-void optimal(const double* A, const double* B, double *C, const int n, const int b);
+void optimal3(const double* A, const double* B, double *C, const int n, const int b);
 void strassen(const double *A, const double *B, double *C, const int n);
