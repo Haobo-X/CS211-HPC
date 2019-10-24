@@ -1,4 +1,5 @@
 #include "../include/for_you_to_do.h"
+#include <math.h>
 /**
  * 
  * this function computes LU factorization
@@ -16,10 +17,59 @@
  *      return  0 : return normally 
  * 
  **/
-int mydgetrf(double *A, int *ipiv, int n) 
+void swap(double* A, int n, int r1, int r2)
+{
+    double* tmpr = (double*)malloc(sizeof(double) * n);
+    memcpy(tmpr, A + r1 * n, n * sizeof(double));
+    memcpy(A + r1 * n, A + r2 * n, n * sizeof(double));
+    memcpy(A + r2 * n, tmpr, n * sizeof(double));
+    free(tmpr);
+}
+
+int mydgetrf(double* A, int* ipiv, int n)
 {
     /* add your code here */
+    int i, j, k;
 
+    for (i = 0; i < n; i++)
+    {
+        int maxidx = i;
+        double max = fabs(A[i * n + i]);
+        int k;
+        for (k = i + 1; k < n; k++)
+        {
+            double tmp = fabs(A[k * n + i]);
+            if (tmp > max)
+            {
+                maxidx = k;
+                max = tmp;
+            }
+        }
+
+        //too small pivot is also unacceptable
+        if (fabs(max - 0.0) < 1e-3) 
+            return -1;
+
+        if (maxidx != i)
+        {
+            ipiv[maxidx] = ipiv[maxidx] ^ ipiv[i];
+            ipiv[i] = ipiv[maxidx] ^ ipiv[i];
+            ipiv[maxidx] = ipiv[maxidx] ^ ipiv[i];
+
+            swap(A, n, i, maxidx);
+        }
+
+        //do factorization
+        for (j = i + 1; j < n; j++)
+        {
+            A[j * n + i] = A[j * n + i] / A[i * n + i];
+            int A_j = A[j * n + i];
+            for (k = 0; k < n; k++)
+            {
+                A[j * n + k] -= A_j * A[i * n + k];
+            }
+        }
+    }
     return 0;
 }
 
@@ -50,11 +100,37 @@ int mydgetrf(double *A, int *ipiv, int n)
  *      none
  * 
  **/
-void mydtrsv(char UPLO, double *A, double *B, int n, int *ipiv)
+void mydtrsv(char UPLO, double* A, double* B, int n, int* ipiv)
 {
     /* add your code here */
+    int i, j;
+    if (UPLO == 'L')
+    {
+        for (i = 0; i < n; i++)
+        {
+            double sub = B[ipiv[i]];
+            for (j = 0; j < i; j++)
+            {
+                sub -= B[ipiv[j]] * A[i * n + j];
+            }
+            B[ipiv[i]] = sub;
+        }
+    }
+    else
+    {
+        for (i = n-1; i >=0; i--)
+        {
+            double sub = B[i];
+            for (j = n-1; j > i; j--)
+            {
+                sub -= B[j] * A[i * n + j];
+            }
+            B[i] = sub/ A[i * n + i];
+        }
+    }
     return;
 }
+
 
 /**
  * 
