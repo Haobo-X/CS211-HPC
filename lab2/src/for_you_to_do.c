@@ -57,22 +57,13 @@ int mydgetrf(double* A, int* ipiv, int n)
         }
 
         //do factorization
-        /*for (j = i + 1; j < n; j++)
+        for (j = i + 1; j < n; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
             int A_j = A[j * n + i];
             for (k = i + 1; k < n; k++)
             {
                 A[j * n + k] -= A_j * A[i * n + k];
-            }
-        }*/
-        for (j = i+1; j < n; j++)
-        {
-            A[j*n + i] = A[j*n + i] / A[i*n + i];
-            int k;
-            for (k = i+1; k < n; k++)
-            {
-                A[j*n + k] -= A[j*n +i] * A[i*n + k];
             }
         }
     }
