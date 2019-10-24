@@ -17,31 +17,28 @@
  *      return  0 : return normally 
  * 
  **/
-void swap(double* A, int n, int r1, int r2)
+void swap(double* A, double* tmpr, int n, int r1, int r2)
 {
-    double* tmpr = (double*)malloc(sizeof(double) * n);
     memcpy(tmpr, A + r1 * n, n * sizeof(double));
     memcpy(A + r1 * n, A + r2 * n, n * sizeof(double));
     memcpy(A + r2 * n, tmpr, n * sizeof(double));
-    free(tmpr);
 }
 
 int mydgetrf(double* A, int* ipiv, int n)
 {
     /* add your code here */
     int i, j, k;
-
+    double* tmpr = (double*)malloc(sizeof(double) * n);
     for (i = 0; i < n; i++)
     {
         int maxidx = i;
         double max = fabs(A[i * n + i]);
-        int k;
-        for (k = i + 1; k < n; k++)
+        for (j = i + 1; j < n; j++)
         {
-            double tmp = fabs(A[k * n + i]);
-            if (tmp > max)
+            double tmp = fabs(A[j * n + i]);
+            if (tmp - max > 1e-6)
             {
-                maxidx = k;
+                maxidx = j;
                 max = tmp;
             }
         }
@@ -56,20 +53,30 @@ int mydgetrf(double* A, int* ipiv, int n)
             ipiv[i] = ipiv[maxidx] ^ ipiv[i];
             ipiv[maxidx] = ipiv[maxidx] ^ ipiv[i];
 
-            swap(A, n, i, maxidx);
+            swap(A, tmpr, n, i, maxidx);
         }
 
         //do factorization
-        for (j = i + 1; j < n; j++)
+        /*for (j = i + 1; j < n; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
             int A_j = A[j * n + i];
-            for (k = 0; k < n; k++)
+            for (k = i + 1; k < n; k++)
             {
                 A[j * n + k] -= A_j * A[i * n + k];
             }
+        }*/
+        for (j = i+1; j < n; j++)
+        {
+            A[j*n + i] = A[j*n + i] / A[i*n + i];
+            int k;
+            for (k = i+1; k < n; k++)
+            {
+                A[j*n + k] -= A[j*n +i] * A[i*n + k];
+            }
         }
     }
+    free(tmpr);
     return 0;
 }
 

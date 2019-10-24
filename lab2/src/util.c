@@ -105,6 +105,8 @@ int verify_matrix(const double *C, const double *D, const int m, const int n)
 
 	if (diff > 1e-3) 
     {
+		print_matrix(C,m,n);
+		print_matrix(D,m,n);
         return -1;
     }
     else
