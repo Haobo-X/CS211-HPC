@@ -122,16 +122,6 @@ void mydtrsv(char UPLO, double* A, double* B, int n, int* ipiv)
     }
     else
     {
-        /*y[n - 1] = B[n - 1] / A[(n-1)*n + n-1];
-        for (i = n-2; i >= 0; i--)
-        {
-            double sum = 0;
-            for (j = i+1; j < n; j++)
-            {
-                sum += y[j] * A[i*n + j];
-            }
-            y[i] = (B[i] - sum) / A[i*n + i];
-        }*/
         for (i = n-1; i >=0; i--)
         {
             double sub = B[i];
