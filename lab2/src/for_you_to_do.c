@@ -60,7 +60,7 @@ int mydgetrf(double* A, int* ipiv, int n)
         for (j = i + 1; j < n; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
-            int A_j = A[j * n + i];
+            double A_j = A[j * n + i];
             for (k = i + 1; k < n; k++)
             {
                 A[j * n + k] -= A_j * A[i * n + k];
@@ -101,21 +101,37 @@ int mydgetrf(double* A, int* ipiv, int n)
 void mydtrsv(char UPLO, double* A, double* B, int n, int* ipiv)
 {
     /* add your code here */
+    double *newB = (double*) malloc(n * sizeof(double));
     int i, j;
     if (UPLO == 'L')
     {
         for (i = 0; i < n; i++)
         {
-            double sub = B[ipiv[i]];
+            newB[i] = B[ipiv[i]];
+        }
+
+        for (i = 0; i < n; i++)
+        {
+            double sub = newB[i];
             for (j = 0; j < i; j++)
             {
-                sub -= B[ipiv[j]] * A[i * n + j];
+                sub -= B[j] * A[i * n + j];
             }
-            B[ipiv[i]] = sub;
+            B[i] = sub;
         }
     }
     else
     {
+        /*y[n - 1] = B[n - 1] / A[(n-1)*n + n-1];
+        for (i = n-2; i >= 0; i--)
+        {
+            double sum = 0;
+            for (j = i+1; j < n; j++)
+            {
+                sum += y[j] * A[i*n + j];
+            }
+            y[i] = (B[i] - sum) / A[i*n + i];
+        }*/
         for (i = n-1; i >=0; i--)
         {
             double sub = B[i];
@@ -126,6 +142,7 @@ void mydtrsv(char UPLO, double* A, double* B, int n, int* ipiv)
             B[i] = sub/ A[i * n + i];
         }
     }
+    free(newB);
     return;
 }
 
