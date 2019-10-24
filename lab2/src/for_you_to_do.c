@@ -141,7 +141,7 @@ void mydgemm(double *A, double *B, double *C, int n, int i, int j, int k, int b)
 {
     /* add your code here */
     /* please just copy from your lab1 function optimal( ... ) */
-    int i = 0;
+    /*int i = 0;
     for (i = 0; i < n; i += b)
     {
         int j = 0;
@@ -207,7 +207,7 @@ void mydgemm(double *A, double *B, double *C, int n, int i, int j, int k, int b)
                 }
             }
         }
-    }
+    }*/
     return;
 }
 
