@@ -123,14 +123,14 @@ void mydtrsv(char UPLO, double* A, double* B, int n, int* ipiv)
     else
     {//avoid cache miss
         for (i = n-1; i >=0; i--)
-		{
-			double sum = 0;
-			for (j = i+1; j < n; j++)
-			{
-				sum += B[j] * A[i * n + j];
-			}
-			B[i] = (B[i] - sum) / A[i * n + i];
-		}
+        {
+            double sum = 0;
+            for (j = i+1; j < n; j++)
+            {
+                sum += B[j] * A[i * n + j];
+            }
+            B[i] = (B[i] - sum) / A[i * n + i];
+        }
     }
     free(newB);
     return;
@@ -336,56 +336,56 @@ void transpose(double* A, int n)
  **/
 int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn)
 {
-	/* add your code here */
-	int i, j, k;
+    /* add your code here */
+    int i, j, k;
     int bn2 = bm - bn;
-	double* tmpr = (double*)malloc(sizeof(double) * n);
+    double* tmpr = (double*)malloc(sizeof(double) * n);
     double* LLT = (double*)malloc(sizeof(double) * bn * bn);
     double* AUR = (double*)malloc(sizeof(double) * bn * bn2);
     double* AURD = (double*)malloc(sizeof(double) * bn * bn2);
     double* LL = (double*)malloc(sizeof(double) * bn * bn);
     int* ipivl = (int*)malloc(sizeof(int) * bn);
 
-	for (i = 0; i < bm; i++)
-	{
-		int maxidx = i;
-		double max = fabs(A[i * n + i]);
-		for (j = i + 1; j < bm; j++)
-		{
-			double tmp = fabs(A[j * n + i]);
-			if (tmp - max > 1e-6)
-			{
-				maxidx = j;
-				max = tmp;
-			}
-		}
+    for (i = 0; i < bm; i++)
+    {
+        int maxidx = i;
+        double max = fabs(A[i * n + i]);
+        for (j = i + 1; j < bm; j++)
+        {
+            double tmp = fabs(A[j * n + i]);
+            if (tmp - max > 1e-6)
+            {
+                maxidx = j;
+                max = tmp;
+            }
+        }
 
-		//too small pivot is also unacceptable
-		if (fabs(max - 0.0) < 1e-3)
-			return -1;
+        //too small pivot is also unacceptable
+        if (fabs(max - 0.0) < 1e-3)
+            return -1;
 
-		if (maxidx != i)
-		{
+        if (maxidx != i)
+        {
             int newMaxidx = pos + maxidx;
             int newI      = pos + i;
-			ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
-			ipiv[newI] = ipiv[newMaxidx] ^ ipiv[newI];
-			ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
+            ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
+            ipiv[newI] = ipiv[newMaxidx] ^ ipiv[newI];
+            ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
 
-			swap(A-pos, tmpr, n, i, maxidx);
-		}
+            swap(A-pos, tmpr, n, i, maxidx);
+        }
 
-		//do factorization
-		for (j = i + 1; j < bm; j++)
-		{
-			A[j * n + i] = A[j * n + i] / A[i * n + i];
-			double A_j = A[j * n + i];
-			for (k = i + 1; k < bn; k++)
-			{
-				A[j * n + k] -= A_j * A[i * n + k];
-			}
-		}
-	}
+        //do factorization
+        for (j = i + 1; j < bm; j++)
+        {
+            A[j * n + i] = A[j * n + i] / A[i * n + i];
+            double A_j = A[j * n + i];
+            for (k = i + 1; k < bn; k++)
+            {
+                A[j * n + k] -= A_j * A[i * n + k];
+            }
+        }
+    }
 
     memset(LLT, 0, bn * bn * sizeof(double));
     memset(LL, 0, bn * bn * sizeof(double));
@@ -435,8 +435,8 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn)
     free(ipivl);
     free(AUR);
     free(AURD);
-	free(tmpr);
-	return 0;
+    free(tmpr);
+    return 0;
 }
 /**
  * 
@@ -471,12 +471,12 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
 {
     int i, j, k;
 
-	double* Aptr = A;
-	for (i = 0; i < n; i+=b)
-	{
+    double* Aptr = A;
+    for (i = 0; i < n; i += b)
+    {
         Aptr += b * n + b;
         mydgetrf(Aptr, i, iptv, n, n - i, b);
-	}
+    }
     return 0;
 }
 
