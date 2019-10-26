@@ -178,17 +178,17 @@ void mydgemm(const double* A, const double* B, double* C, const int m, const int
                             register double A_1_M = A[(i1 + 1) * p + k1];
                             register double A_2_M = A[(i1 + 2) * p + k1];
 
-                            register double B_M =  B[k1 * p + j1];
+                            register double B_M =  B[k1 * n + j1];
                             C_0_0 += A_0_M * B_M;
                             C_1_0 += A_1_M * B_M;
                             C_2_0 += A_2_M * B_M;
 
-                            B_M = B[k1 * p + (j1 + 1)];
+                            B_M = B[k1 * n + (j1 + 1)];
                             C_0_1 += A_0_M * B_M;
                             C_1_1 += A_1_M * B_M;
                             C_2_1 += A_2_M * B_M;
 
-                            B_M = B[k1 * p + (j1 + 2)];
+                            B_M = B[k1 * n + (j1 + 2)];
                             C_0_2 += A_0_M * B_M;
                             C_1_2 += A_1_M * B_M;
                             C_2_2 += A_2_M * B_M;
