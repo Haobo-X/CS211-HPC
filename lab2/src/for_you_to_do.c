@@ -399,33 +399,26 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         for (i = 0; i < bn; i++)
         {
             LLT[i * bn + i] = 1;
-        }
-
-        for (i = 0; i < bn; i++)
-        {
             ipivl[i] = i;
-        }
-
-        for (i = 0; i < bn; i++)
-        {
+            
             LL[i * bn + i] = 1;
             for (j = 0; j < i; j++)
             {
                 LL[i * bn + j] = A[i * n + j];
             }
-        }
-
-        for (i = 0; i < bn; i++)
-        {
+            
             memcpy(AUR + i * bn2, A + i * n + bn, bn2 * sizeof(double));
         }
 
+        //get LL inverse and store in LLT
         for (i = 0; i < bn; i++)
         {
             mydtrsv('L', LL, LLT + i * bn, bn, ipivl);
         }
 
         transpose(LLT, bn, bn);
+
+        //A(ib:end , end+1:n) = LL-1 * A(ib:end , end+1:n)
         mydgemm(LLT, AUR, AURD, bn, bn, bn2, b);
 
         for (i = 0; i < bn; i++)
@@ -436,8 +429,9 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         {
             memcpy(ALLD + i * bn, A + i * n + bn * n, bn * sizeof(double));
         }
-        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);
 
+        //A(end+1:n , end+1:n )-= A(end+1:n , ib:end) * A(ib:end , end+1:n)    
+        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);
     }
 
     free(LLT);
@@ -448,163 +442,6 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
     free(tmpr);
     return 0;
 }
-
-int mydgetrf_non_squrare_v2(double* A, int pos, int* ipiv, int n, int bm, int bn, int b)
-{
-    /* add your code here */
-    int i, j, k;
-    int bn2 = bm - bn;
-    double* tmpr = (double*)malloc(sizeof(double) * n);
-    double* AUR = (double*)malloc(sizeof(double) * bn * bn2);
-    double* ALLD = (double*)malloc(sizeof(double) * bn2 * bn);
-
-    for (i = 0; i < bn; i++)
-    {
-        int maxidx = i;
-        double max = fabs(A[i * n + i]);
-        for (j = i + 1; j < bm; j++)
-        {
-            register double tmp = fabs(A[j * n + i]);
-            if (tmp - max > 1e-6)
-            {
-                maxidx = j;
-                max = tmp;
-            }
-        }
-
-        //too small pivot is also unacceptable
-        if (fabs(max - 0.0) < 1e-3)
-            return -1;
-
-        if (maxidx != i)
-        {
-            int newMaxidx = pos + maxidx;
-            int newI      = pos + i;
-            ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
-            ipiv[newI] = ipiv[newMaxidx] ^ ipiv[newI];
-            ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
-
-            swap(A-pos, tmpr, n, i, maxidx);
-        }
-
-        //do factorization
-        for (j = i + 1; j < bm; j++)
-        {
-            A[j * n + i] = A[j * n + i] / A[i * n + i];
-            register double A_j = A[j * n + i];
-            for (k = i + 1; k < bn; k++)
-            {
-                A[j * n + k] -= A_j * A[i * n + k];
-            }
-        }
-    }
-
-    if (bn2 > 0)
-    {
-        for (j = 0; j < (pos + b > n? n - pos : b); j++)
-        {
-            for (i = bn; i < n; i++)
-            {
-                register double A_J_I = A[j * n + i];
-                for (k = 0; k < j; k++)
-                {
-                    A_J_I -= A[j * n + k] * A[k * n + i];
-                }
-                A[j * n + i] = A_J_I;
-            }
-        }
-
-        for (i = 0; i < bn; i++)
-        {
-            memcpy(AUR + i * bn2, A + i * n + bn, bn2 * sizeof(double));
-        }
-
-        for (i = 0; i < bn2; i++)
-        {
-            memcpy(ALLD + i * bn, A + i * n + bn * n, bn * sizeof(double));
-        }
-        mydgemm_sub(ALLD, AUR, A + bn * n + bn, bn2, bn, bn2, n, b);
-    }
-
-    free(AUR);
-    free(ALLD);
-    free(tmpr);
-    return 0;
-}
-
-
-
-
-
-void dgemm3_cache_mod(double *a, double *b, double *c, int n, int i, int j, int k, int blocksize)
-{
-    int i1 = i, j1 = j, k1 = k;
-    int ni = i + blocksize > n ? n : i + blocksize;
-    int nj = j + blocksize > n ? n : j + blocksize;
-    int nk = k + blocksize > n ? n : k + blocksize;
-
-    for (i1 = i; i1 < ni; i1 += 3)
-    {
-        for (j1 = j; j1 < nj; j1 += 3)
-        {
-            int t = i1 * n + j1;
-            int tt = t + n;
-            int ttt = tt + n;
-            register double c00 = c[t];
-            register double c01 = c[t + 1];
-            register double c02 = c[t + 2];
-            register double c10 = c[tt];
-            register double c11 = c[tt + 1];
-            register double c12 = c[tt + 2];
-            register double c20 = c[ttt];
-            register double c21 = c[ttt + 1];
-            register double c22 = c[ttt + 2];
-
-            for (k1 = k; k1 < nk; k1 += 3)
-            {
-		int l;
-                for (l = 0; l < 3; l++)
-                {
-                    int ta = i1 * n + k1 + l;
-                    int tta = ta + n;
-                    int ttta = tta + n;
-                    int tb = k1 * n + j1 + l * n;
-                    register double a0 = a[ta];
-                    register double a1 = a[tta];
-                    register double a2 = a[ttta];
-                    register double b0 = b[tb];
-                    register double b1 = b[tb + 1];
-                    register double b2 = b[tb + 2];
-
-                    c00 -= a0 * b0;
-                    c01 -= a0 * b1;
-                    c02 -= a0 * b2;
-                    c10 -= a1 * b0;
-                    c11 -= a1 * b1;
-                    c12 -= a1 * b2;
-                    c20 -= a2 * b0;
-                    c21 -= a2 * b1;
-                    c22 -= a2 * b2;
-                }
-            }
-            c[t] = c00;
-            c[t + 1] = c01;
-            c[t + 2] = c02;
-            c[tt] = c10;
-            c[tt + 1] = c11;
-            c[tt + 2] = c12;
-            c[ttt] = c20;
-            c[ttt + 1] = c21;
-            c[ttt + 2] = c22;
-        }
-    }
-}
-
-
-
-
-
-
 /**
  * 
  * this function computes triangular matrix - vector solver
@@ -634,94 +471,17 @@ void dgemm3_cache_mod(double *a, double *b, double *c, int n, int i, int j, int 
  *      return  0 : return normally 
  * 
  **/
-int mydgetrf_block(double *A, int *PVT, int n, int b) 
+int mydgetrf_block(double *A, int *ipiv, int n, int b) 
 {
-    /*int i, j, k;
+    int i, j, k;
 
     double* Aptr = A;
     for (i = 0; i < n - b; i += b)
     {
-        mydgetrf_non_squrare_v2(Aptr, i, ipiv, n, n - i, b, b);
+        mydgetrf_non_squrare(Aptr, i, ipiv, n, n - i, b, b);
         Aptr += b * n + b;
     }
-    mydgetrf_non_squrare_v2(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
-    return 0;*/
-    int ib, i, j, k, maxIndex;
-    double max, sum;
-    double *temprow = (double*) malloc(sizeof(double) * n);
-
-    for (ib = 0; ib < n; ib += b)
-    {
-        for (i = ib; i < ib+b && i < n; i++)
-        {
-            // pivoting
-            maxIndex = i;
-            max = fabs(A[i*n + i]);
-            
-            int j;
-            for (j = i+1; j < n; j++)
-            {
-                if (fabs(A[j*n + i]) > max)
-                {
-                    maxIndex = j;
-                    max = fabs(A[j*n + i]);
-                }
-            }
-            if (max == 0)
-            {
-                printf("LU factorization failed: coefficient matrix is singular.\n");
-                return -1;
-            }
-            else
-            {
-                if (maxIndex != i)
-                {
-                    // save pivoting information
-                    int temp = PVT[i];
-                    PVT[i] = PVT[maxIndex];
-                    PVT[maxIndex] = temp;
-                    // swap rows
-                    memcpy(temprow, A + i*n, n * sizeof(double));
-                    memcpy(A + i*n, A + maxIndex*n, n * sizeof(double));
-                    memcpy(A + maxIndex*n, temprow, n * sizeof(double));
-                }
-            }
-
-            // factorization
-            for (j = i+1; j < n; j++)
-            {
-                A[j*n + i] = A[j*n + i] / A[i*n + i];
-                int k;
-                for (k = i+1; k < ib+b && k < n; k++)
-                {
-                    A[j*n + k] -= A[j*n +i] * A[i*n + k];
-                }
-            }
-        }
-
-        // update A(ib:end, end+1:n)
-        for (i = ib; i < ib+b && i < n; i++)
-        {
-            for (j = ib+b; j < n; j++)
-            {
-                sum = 0;
-                for (k = ib; k < i; k++)
-                {
-                    sum += A[i*n + k] * A[k*n + j];
-                }
-                A[i*n + j] -= sum;
-            }
-        }
-
-        // update A(end+1:n, end+1:n)
-        for (i = ib+b; i < n; i += b)
-        {
-            for (j = ib+b; j < n; j += b)
-            {
-                dgemm3_cache_mod(A, A, A, n, i, j, ib, b);
-            }
-        }
-    }
+    mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
     return 0;
 }
 
