@@ -555,6 +555,7 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
         Aptr += b * n + b;
     }
     mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    free(Aptr);
     return 0;
 }
 
@@ -569,6 +570,7 @@ int mydgetrf_block_naive(double *A, int *ipiv, int n, int b)
         Aptr += b * n + b;
     }
     mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    free(Aptr);
     return 0;
 }
 
