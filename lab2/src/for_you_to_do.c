@@ -334,7 +334,7 @@ void transpose(double* A, int m, int n)
 int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, int b)
 {
     /* add your code here */
-    int i, j, k;
+    int i, j, k, i1, j1;
     int bn2 = bm - bn;
     double* tmpr = (double*)malloc(sizeof(double) * n);
    /* double* LLT = (double*)malloc(sizeof(double) * bn * bn);
@@ -434,23 +434,25 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);*/
 
 
-
-        for (i = 0; i < bn; i++)
+        int blocksize = bn;
+        for (j = bn; j < bm; j += blocksize)
         {
-            for (j = bn; j < bm; j++)
+            blocksize = (j + blocksize) > bm ? bm - j : blocksize;
+            for (i = 0; i < bn; i++)
             {
-                double sum = 0;
-                for (k = 0; k < i; k++)
+                for (j1 = j; j1 < blocksize; j1++)
                 {
-                    sum += A[i * n + k] * A[k * n + j];
+                    register double A_i_j = A[i * n + j1];
+                    for (k = 0; k < i; k++)
+                    {
+                        A_i_j -= A[i * n + k] * A[k * n + j1];
+                    }
+                    A[i * n + j1] = A_i_j;
                 }
-                A[i * n + j] -= sum;
             }
         }
 
-
         mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
-
     }
 
     /*free(LLT);
