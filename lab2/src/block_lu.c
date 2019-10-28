@@ -8,7 +8,7 @@ void block_lu(double *A, double *B, int n, int b)
         ipiv[i] = i;
     }
 
-    int success = mydgetrf_block(A, ipiv, n, b);
+    int success = mydgetrf_block_naive(A, ipiv, n, b);
 
     if (success) 
     {
@@ -28,7 +28,7 @@ void block_lu_naive(double *A, double *B, int n, int b)
         ipiv[i] = i;
     }
 
-    int success = mydgetrf_block_naive(A, ipiv, n, b);
+    int success = mydgetrf_block(A, ipiv, n, b);
 
     if (success) 
     {
