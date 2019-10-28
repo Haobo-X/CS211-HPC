@@ -98,9 +98,11 @@ int test_all_lu_functions()
         free(A1);
         free(A2);
         free(A3);
+        free(A4);
         free(B1);
         free(B2);
         free(B3);
+        free(B4);
     }
 
     return 0;
