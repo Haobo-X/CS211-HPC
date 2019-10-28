@@ -406,7 +406,10 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
             {
                 LL[i * bn + j] = A[i * n + j];
             }
+        }
             
+        for (i = 0; i < bn; i++)
+        {
             memcpy(AUR + i * bn2, A + i * n + bn, bn2 * sizeof(double));
         }
 
