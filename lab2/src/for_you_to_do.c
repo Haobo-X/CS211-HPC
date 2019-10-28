@@ -56,7 +56,6 @@ int mydgetrf(double* A, int* ipiv, int n)
             swap(A, tmpr, n, i, maxidx);
         }
 
-        //do factorization
         for (j = i + 1; j < n; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
@@ -245,26 +244,26 @@ int i = 0;
                         int k1 = 0;
                         for (k1 = k; k1 < (k + b > p? p : (k + b)); k1++)
                         {
-                            register double A_0_M = A[i1 * p + k1];
-                            register double A_1_M = A[(i1 + 1) * p + k1];
-                            register double A_2_M = A[(i1 + 2) * p + k1];
+                            register double A_0_M = A[i1 * rowsize + k1];
+                            register double A_1_M = A[(i1 + 1) * rowsize + k1];
+                            register double A_2_M = A[(i1 + 2) * rowsize + k1];
 
-                            register double B_M =  B[k1 * n + j1];
+                            register double B_M =  B[k1 * rowsize + j1];
                             C_0_0 -= A_0_M * B_M;
                             C_1_0 -= A_1_M * B_M;
                             C_2_0 -= A_2_M * B_M;
 
-                            B_M = B[k1 * n + (j1 + 1)];
+                            B_M = B[k1 * rowsize + (j1 + 1)];
                             C_0_1 -= A_0_M * B_M;
                             C_1_1 -= A_1_M * B_M;
                             C_2_1 -= A_2_M * B_M;
 
-                            B_M = B[k1 * n + (j1 + 2)];
+                            B_M = B[k1 * rowsize + (j1 + 2)];
                             C_0_2 -= A_0_M * B_M;
                             C_1_2 -= A_1_M * B_M;
                             C_2_2 -= A_2_M * B_M;
-
                         }
+
                         C[i1 * rowsize + j1] = C_0_0;
                         C[(i1 + 1) * rowsize + j1] = C_1_0;
                         C[(i1 + 2) * rowsize + j1] = C_2_0;
@@ -275,8 +274,7 @@ int i = 0;
 
                         C[i1 * rowsize + (j1 + 2)] = C_0_2;
                         C[(i1 + 1) * rowsize + (j1 + 2)] = C_1_2;
-                        C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2;
-                    
+                        C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2;                
                     }
                 }
             }
@@ -339,12 +337,12 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
     int i, j, k;
     int bn2 = bm - bn;
     double* tmpr = (double*)malloc(sizeof(double) * n);
-    double* LLT = (double*)malloc(sizeof(double) * bn * bn);
+   /* double* LLT = (double*)malloc(sizeof(double) * bn * bn);
     double* AUR = (double*)malloc(sizeof(double) * bn * bn2);
     double* AURD = (double*)malloc(sizeof(double) * bn * bn2);
     double* ALLD = (double*)malloc(sizeof(double) * bn2 * bn);
     double* LL = (double*)malloc(sizeof(double) * bn * bn);
-    int* ipivl = (int*)malloc(sizeof(int) * bn);
+    int* ipivl = (int*)malloc(sizeof(int) * bn);*/
 
     for (i = 0; i < bn; i++)
     {
@@ -375,7 +373,6 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
             swap(A-pos, tmpr, n, i, maxidx);
         }
 
-        //do factorization
         for (j = i + 1; j < bm; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
@@ -389,7 +386,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
 
     if (bn2 > 0)
     {
-        memset(LLT, 0, bn * bn * sizeof(double));
+        /*memset(LLT, 0, bn * bn * sizeof(double));
         memset(LL, 0, bn * bn * sizeof(double));
         memset(ipivl, 0, bn * sizeof(int));
         memset(AUR, 0, bn * bn2 * sizeof(double));
@@ -434,14 +431,33 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         }
 
         //A(end+1:n , end+1:n )-= A(end+1:n , ib:end) * A(ib:end , end+1:n)    
-        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);
+        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);*/
+
+
+
+        for (i = 0; i < bn; i++)
+        {
+            for (j = bn; j < bm; j++)
+            {
+                double sum = 0;
+                for (k = 0; k < i; k++)
+                {
+                    sum += A[i * n + k] * A[k * n + j];
+                }
+                A[i * n + j] -= sum;
+            }
+        }
+
+
+        mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
+
     }
 
-    free(LLT);
+    /*free(LLT);
     free(LL);
     free(ipivl);
     free(AUR);
-    free(AURD);
+    free(AURD);*/
     free(tmpr);
     return 0;
 }
