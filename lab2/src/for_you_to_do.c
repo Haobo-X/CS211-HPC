@@ -331,18 +331,18 @@ void transpose(double* A, int m, int n)
  *      return  0 : return normally 
  * 
  **/
-int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, int b)
+int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int bn, int b)
 {
     /* add your code here */
     int i, j, k, i1, j1;
     int bn2 = bm - bn;
     double* tmpr = (double*)malloc(sizeof(double) * n);
-   /* double* LLT = (double*)malloc(sizeof(double) * bn * bn);
+    double* LLT = (double*)malloc(sizeof(double) * bn * bn);
     double* AUR = (double*)malloc(sizeof(double) * bn * bn2);
     double* AURD = (double*)malloc(sizeof(double) * bn * bn2);
     double* ALLD = (double*)malloc(sizeof(double) * bn2 * bn);
     double* LL = (double*)malloc(sizeof(double) * bn * bn);
-    int* ipivl = (int*)malloc(sizeof(int) * bn);*/
+    int* ipivl = (int*)malloc(sizeof(int) * bn);
 
     for (i = 0; i < bn; i++)
     {
@@ -386,7 +386,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
 
     if (bn2 > 0)
     {
-        /*memset(LLT, 0, bn * bn * sizeof(double));
+        memset(LLT, 0, bn * bn * sizeof(double));
         memset(LL, 0, bn * bn * sizeof(double));
         memset(ipivl, 0, bn * sizeof(int));
         memset(AUR, 0, bn * bn2 * sizeof(double));
@@ -431,9 +431,67 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         }
 
         //A(end+1:n , end+1:n )-= A(end+1:n , ib:end) * A(ib:end , end+1:n)    
-        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);*/
+        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);
+    }
 
+    free(LLT);
+    free(LL);
+    free(ipivl);
+    free(AUR);
+    free(AURD);
+    free(tmpr);
+    return 0;
+}
 
+int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, int b)
+{
+    /* add your code here */
+    int i, j, k, i1, j1;
+    int bn2 = bm - bn;
+    double* tmpr = (double*)malloc(sizeof(double) * n);
+
+    for (i = 0; i < bn; i++)
+    {
+        int maxidx = i;
+        double max = fabs(A[i * n + i]);
+        for (j = i + 1; j < bm; j++)
+        {
+            double tmp = fabs(A[j * n + i]);
+            if (tmp - max > 1e-6)
+            {
+                maxidx = j;
+                max = tmp;
+            }
+        }
+
+        //too small pivot is also unacceptable
+        if (fabs(max - 0.0) < 1e-3)
+            return -1;
+
+        if (maxidx != i)
+        {
+            int newMaxidx = pos + maxidx;
+            int newI      = pos + i;
+            ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
+            ipiv[newI] = ipiv[newMaxidx] ^ ipiv[newI];
+            ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
+
+            swap(A-pos, tmpr, n, i, maxidx);
+        }
+
+        for (j = i + 1; j < bm; j++)
+        {
+            A[j * n + i] = A[j * n + i] / A[i * n + i];
+            double A_j = A[j * n + i];
+            for (k = i + 1; k < bn; k++)
+            {
+                A[j * n + k] -= A_j * A[i * n + k];
+            }
+        }
+    }
+
+    if (bn2 > 0)
+    {
         int blocksize = bn;
         for (j = bn; j < bm; j += blocksize)
         {
@@ -454,12 +512,6 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
 
         mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
     }
-
-    /*free(LLT);
-    free(LL);
-    free(ipivl);
-    free(AUR);
-    free(AURD);*/
     free(tmpr);
     return 0;
 }
@@ -503,6 +555,20 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
         Aptr += b * n + b;
     }
     mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    return 0;
+}
+
+int mydgetrf_block_naive(double *A, int *ipiv, int n, int b) 
+{
+    int i, j, k;
+
+    double* Aptr = A;
+    for (i = 0; i < n - b; i += b)
+    {
+        mydgetrf_non_squrare_naive(Aptr, i, ipiv, n, n - i, b, b);
+        Aptr += b * n + b;
+    }
+    mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
     return 0;
 }
 

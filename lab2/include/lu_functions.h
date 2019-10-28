@@ -15,5 +15,6 @@
 void lapack_lu(double *A, double *B, int n);
 void naive_lu(double *A, double *B, int n);
 void block_lu(double *A, double *B, int n, int b);
+void block_lu_naive(double *A, double *B, int n, int b);
 
 #endif // _LU_H_
