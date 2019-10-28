@@ -551,10 +551,10 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
     double* Aptr = A;
     for (i = 0; i < n - b; i += b)
     {
-        mydgetrf_non_squrare_naive(Aptr, i, ipiv, n, n - i, b, b);
+        mydgetrf_non_squrare(Aptr, i, ipiv, n, n - i, b, b);
         Aptr += b * n + b;
     }
-    mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
     return 0;
 }
 

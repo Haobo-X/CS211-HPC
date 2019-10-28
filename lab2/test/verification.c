@@ -59,11 +59,10 @@ int test_all_lu_functions()
 
         if ( matrix_copy(A2, A1, n, n) ) return -1;
         if ( matrix_copy(A3, A1, n, n) ) return -1;
+        if ( matrix_copy(A4, A1, n, n) ) return -1;
 
         if ( matrix_copy(B2, B1, n, 1) ) return -1;
         if ( matrix_copy(B3, B1, n, 1) ) return -1;
-
-        if ( matrix_copy(A4, A1, n, 1) ) return -1;
         if ( matrix_copy(B4, B1, n, 1) ) return -1;
 
         t0 = get_sec();    
@@ -80,7 +79,7 @@ int test_all_lu_functions()
             printf("my naive LU is incorrect.\n");
 
         t0 = get_sec();    
-        block_lu_naive(A3, B3, n, 126);
+        block_lu(A3, B3, n, 126);
         t1 = get_sec();
         printf("Elapsed time, block LU: %lf seconds\n", t1 - t0);
 
