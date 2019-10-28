@@ -88,7 +88,7 @@ int test_all_lu_functions()
             printf("my block LU is incorrect.\n");
 
         t0 = get_sec();    
-        block_lu(A4, B4, n, 126);
+        block_lu_naive(A4, B4, n, 126);
         t1 = get_sec();
         printf("Elapsed time, block LU naive: %lf seconds\n", t1 - t0);
 
