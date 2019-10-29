@@ -85,7 +85,7 @@ int test_all_lu_functions()
 
         if (verify_matrix(A1, A3, n, n) || verify_matrix(B1, B3, n, 1))
             printf("my block LU is incorrect.\n");
-/*
+
         t0 = get_sec();    
         block_lu_naive(A4, B4, n, 3);
         t1 = get_sec();
@@ -93,7 +93,7 @@ int test_all_lu_functions()
 
         if (verify_matrix(A1, A4, n, n) || verify_matrix(B1, B4, n, 1))
             printf("my block LU naive is incorrect.\n");
-*/
+
         free(A1);
         free(A2);
         free(A3);
