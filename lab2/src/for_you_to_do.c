@@ -283,7 +283,6 @@ int i = 0;
     return;
 }
 
-
 /**
  *  
  * this function transposes a square matrix
@@ -376,12 +375,14 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i]; 
         }
-        mydgemm_sub(A + n + i * (n + 1), A + 1 + i * (n + 1), A + n + 1 + i * (n + 1), 1, bn - 1 - i, 1, n, b);
-            /*double A_j = A[j * n + i];
+        for (j = i + 1; j < bm; j++)
+        {
+            double A_j = A[j * n + i];
             for (k = i + 1; k < bn; k++)
             {
                 A[j * n + k] -= A_j * A[i * n + k];
-            }*/
+            }
+        }
     }
 
     if (bn2 > 0)
