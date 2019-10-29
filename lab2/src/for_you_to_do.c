@@ -473,7 +473,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
 
             swap(A-pos, tmpr, n, i, maxidx);
         }
-
+/*
         for (j = i + 1; j < bm; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
@@ -514,6 +514,15 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         }
         for (j = bm - biasj; j < bm; j++)
         {
+            double A_j = A[j * n + i];
+            for (k = i + 1; k < bn; k++)
+            {
+                A[j * n + k] -= A_j * A[i * n + k];
+            }
+        }*/
+        for (j = i + 1; j < bm; j++)
+        {
+            A[j * n + i] = A[j * n + i] / A[i * n + i];
             double A_j = A[j * n + i];
             for (k = i + 1; k < bn; k++)
             {
