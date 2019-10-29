@@ -493,7 +493,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
     if (bn2 > 0)
     {
         int blocksize = bn;
-        for (j = bn; j < bm; j += blocksize)
+        /*for (j = bn; j < bm; j += blocksize)
         {
             blocksize = (j + blocksize) > bm ? bm - j : blocksize;
             for (i = 0; i < bn; i++)
@@ -508,7 +508,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
                     A[i * n + j1] = A_i_j;
                 }
             }
-        }
+        }*/
 
         //mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
     }
