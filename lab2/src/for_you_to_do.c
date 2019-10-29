@@ -1,6 +1,5 @@
 #include "../include/for_you_to_do.h"
 #include <math.h>
-#include <x86intrin.h>
 /**
  * 
  * this function computes LU factorization
@@ -287,7 +286,7 @@ int i = 0;
 }
 
 
-void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
+inline void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
 {
     double *A = ptr + b * rowsize;
     double *B = ptr + b;
@@ -304,55 +303,52 @@ void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
                 int j1 = 0;
                 for (j1 = j; j1 < (j + b > m? m : (j + b)); j1 += 3)
                 {
-                    __m128d C_0_0, C_1_0, C_2_0, C_0_1, C_1_1, C_2_1, C_0_2, C_1_2, C_2_2;
-                    C_0_0 = _mm_loadu_pd(C + i1 * rowsize + j1);
-                    C_1_0 = _mm_loadu_pd(C + (i1 + 1) * rowsize + j1);
-                    C_2_0 = _mm_loadu_pd(C + (i1 + 2) * rowsize + j1);
+                    register double C_0_0 = C[i1 * rowsize + j1];
+                    register double C_1_0 = C[(i1 + 1) * rowsize + j1];
+                    register double C_2_0 = C[(i1 + 2) * rowsize + j1];
 
-                    C_0_1 = _mm_loadu_pd(C + i1 * rowsize + (j1 + 1));
-                    C_1_1 = _mm_loadu_pd(C + (i1 + 1) * rowsize + (j1 + 1));
-                    C_2_1 = _mm_loadu_pd(C + (i1 + 2) * rowsize + (j1 + 1));
+                    register double C_0_1 = C[i1 * rowsize + (j1 + 1)];
+                    register double C_1_1 = C[(i1 + 1) * rowsize + (j1 + 1)];
+                    register double C_2_1 = C[(i1 + 2) * rowsize + (j1 + 1)];
 
-                    C_0_2 = _mm_loadu_pd(C + i1 * rowsize + (j1 + 2));
-                    C_1_2 = _mm_loadu_pd(C + (i1 + 1) * rowsize + (j1 + 2));
-                    C_2_2 = _mm_loadu_pd(C + (i1 + 2) * rowsize + (j1 + 2));
+                    register double C_0_2 = C[i1 * rowsize + (j1 + 2)];
+                    register double C_1_2 = C[(i1 + 1) * rowsize + (j1 + 2)];
+                    register double C_2_2 = C[(i1 + 2) * rowsize + (j1 + 2)];
 
                     int k1 = 0;
                     for (k1 = 0; k1 < b; k1++)
                     {
-                        __m128d A_0_M, A_1_M, A_2_M;
-                        __m128d B_M;
-                        A_0_M = _mm_loadu_pd(A + i1 * rowsize + k1);
-                        A_1_M = _mm_loadu_pd(A + (i1 + 1) * rowsize + k1);
-                        A_2_M = _mm_loadu_pd(A + (i1 + 2) * rowsize + k1);
+                        register double A_0_M = A[i1 * rowsize + k1];
+                        register double A_1_M = A[(i1 + 1) * rowsize + k1];
+                        register double A_2_M = A[(i1 + 2) * rowsize + k1];
 
-                        B_M =  _mm_loadu_pd(B + k1 * rowsize + j1);
-                        C_0_0 = _mm_sub_pd(C_0_0, _mm_mul_pd(A_0_M, B_M));
-                        C_1_0 = _mm_sub_pd(C_1_0, _mm_mul_pd(A_1_M, B_M));
-                        C_2_0 = _mm_sub_pd(C_2_0, _mm_mul_pd(A_2_M, B_M));
+                        register double B_M =  B[k1 * rowsize + j1];
+                        C_0_0 -= A_0_M * B_M;
+                        C_1_0 -= A_1_M * B_M;
+                        C_2_0 -= A_2_M * B_M;
 
-                        B_M = _mm_loadu_pd(B + k1 * rowsize + (j1 + 1));
-                        C_0_1 = _mm_sub_pd(C_0_1, _mm_mul_pd(A_0_M, B_M));
-                        C_1_1 = _mm_sub_pd(C_1_1, _mm_mul_pd(A_1_M, B_M));
-                        C_2_1 = _mm_sub_pd(C_2_1, _mm_mul_pd(A_2_M, B_M));
+                        B_M = B[k1 * rowsize + (j1 + 1)];
+                        C_0_1 -= A_0_M * B_M;
+                        C_1_1 -= A_1_M * B_M;
+                        C_2_1 -= A_2_M * B_M;
 
-                        B_M = _mm_loadu_pd(B + k1 * rowsize + (j1 + 2));
-                        C_0_2 = _mm_sub_pd(C_0_2, _mm_mul_pd(A_0_M, B_M));
-                        C_1_2 = _mm_sub_pd(C_1_2, _mm_mul_pd(A_1_M, B_M));
-                        C_2_2 = _mm_sub_pd(C_2_2, _mm_mul_pd(A_2_M, B_M));
+                        B_M = B[k1 * rowsize + (j1 + 2)];
+                        C_0_2 -= A_0_M * B_M;
+                        C_1_2 -= A_1_M * B_M;
+                        C_2_2 -= A_2_M * B_M;
                     }
 
-                    _mm_storeu_pd(C + i1 * rowsize + j1, C_0_0);
-                    _mm_storeu_pd(C + (i1 + 1) * rowsize + j1, C_1_0);
-                    _mm_storeu_pd(C + (i1 + 2) * rowsize + j1, C_2_0);
+                    C[i1 * rowsize + j1] = C_0_0;
+                    C[(i1 + 1) * rowsize + j1] = C_1_0;
+                    C[(i1 + 2) * rowsize + j1] = C_2_0;
 
-                    _mm_storeu_pd(C + i1 * rowsize + (j1 + 1), C_0_1);
-                    _mm_storeu_pd(C + (i1 + 1) * rowsize + (j1 + 1), C_1_1);
-                    _mm_storeu_pd(C + (i1 + 2) * rowsize + (j1 + 1), C_2_1);
+                    C[i1 * rowsize + (j1 + 1)] = C_0_1;
+                    C[(i1 + 1) * rowsize + (j1 + 1)] = C_1_1;
+                    C[(i1 + 2) * rowsize + (j1 + 1)] = C_2_1;
 
-                    _mm_storeu_pd(C + i1 * rowsize + (j1 + 2), C_0_2);
-                    _mm_storeu_pd(C + (i1 + 1) * rowsize + (j1 + 2), C_1_2);
-                    _mm_storeu_pd(C + (i1 + 2) * rowsize + (j1 + 2), C_2_2);             
+                    C[i1 * rowsize + (j1 + 2)] = C_0_2;
+                    C[(i1 + 1) * rowsize + (j1 + 2)] = C_1_2;
+                    C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2;                
                 }
             }
         }
