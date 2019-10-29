@@ -141,7 +141,7 @@ void mydtrsv(char UPLO, double* A, double* B, int n, int* ipiv)
  * Same function as what you used in lab1, cache_part4.c : optimal( ... ).
  * 
  **/
-void mydgemm(const double* A, const double* B, double* C, const int m, const int p, const int n, int rowsize, const int b)
+void mydgemm(const double* A, const double* B, double* C, const int m, const int p, const int n, const int b)
 {//mxp pxn = mxn
     int i = 0;
     for (i = 0; i < m; i += b)
@@ -158,52 +158,52 @@ void mydgemm(const double* A, const double* B, double* C, const int m, const int
                     int j1 = 0;
                     for (j1 = j; j1 < (j + b > n? n : (j + b)); j1 += 3)
                     {
-                        register double C_0_0 = C[i1 * rowsize + j1];
-                        register double C_1_0 = C[(i1 + 1) * rowsize + j1];
-                        register double C_2_0 = C[(i1 + 2) * rowsize + j1];
+                        register double C_0_0 = C[i1 * n + j1];
+                        register double C_1_0 = C[(i1 + 1) * n + j1];
+                        register double C_2_0 = C[(i1 + 2) * n + j1];
 
-                        register double C_0_1 = C[i1 * rowsize + (j1 + 1)];
-                        register double C_1_1 = C[(i1 + 1) * rowsize + (j1 + 1)];
-                        register double C_2_1 = C[(i1 + 2) * rowsize + (j1 + 1)];
+                        register double C_0_1 = C[i1 * n + (j1 + 1)];
+                        register double C_1_1 = C[(i1 + 1) * n + (j1 + 1)];
+                        register double C_2_1 = C[(i1 + 2) * n + (j1 + 1)];
 
-                        register double C_0_2 = C[i1 * rowsize + (j1 + 2)];
-                        register double C_1_2 = C[(i1 + 1) * rowsize + (j1 + 2)];
-                        register double C_2_2 = C[(i1 + 2) * rowsize + (j1 + 2)];
+                        register double C_0_2 = C[i1 * n + (j1 + 2)];
+                        register double C_1_2 = C[(i1 + 1) * n + (j1 + 2)];
+                        register double C_2_2 = C[(i1 + 2) * n + (j1 + 2)];
 
                         int k1 = 0;
                         for (k1 = k; k1 < (k + b > p? p : (k + b)); k1++)
                         {
-                            register double A_0_M = A[i1 * rowsize + k1];
-                            register double A_1_M = A[(i1 + 1) * rowsize + k1];
-                            register double A_2_M = A[(i1 + 2) * rowsize + k1];
+                            register double A_0_M = A[i1 * p + k1];
+                            register double A_1_M = A[(i1 + 1) * p + k1];
+                            register double A_2_M = A[(i1 + 2) * p + k1];
 
-                            register double B_M =  B[k1 * rowsize + j1];
+                            register double B_M =  B[k1 * n + j1];
                             C_0_0 += A_0_M * B_M;
                             C_1_0 += A_1_M * B_M;
                             C_2_0 += A_2_M * B_M;
 
-                            B_M = B[k1 * rowsize + (j1 + 1)];
+                            B_M = B[k1 * n + (j1 + 1)];
                             C_0_1 += A_0_M * B_M;
                             C_1_1 += A_1_M * B_M;
                             C_2_1 += A_2_M * B_M;
 
-                            B_M = B[k1 * rowsize + (j1 + 2)];
+                            B_M = B[k1 * n + (j1 + 2)];
                             C_0_2 += A_0_M * B_M;
                             C_1_2 += A_1_M * B_M;
                             C_2_2 += A_2_M * B_M;
 
                         }
-                        C[i1 * rowsize + j1] = C_0_0;
-                        C[(i1 + 1) * rowsize + j1] = C_1_0;
-                        C[(i1 + 2) * rowsize + j1] = C_2_0;
+                        C[i1 * n + j1] = C_0_0;
+                        C[(i1 + 1) * n + j1] = C_1_0;
+                        C[(i1 + 2) * n + j1] = C_2_0;
 
-                        C[i1 * rowsize + (j1 + 1)] = C_0_1;
-                        C[(i1 + 1) * rowsize + (j1 + 1)] = C_1_1;
-                        C[(i1 + 2) * rowsize + (j1 + 1)] = C_2_1;
+                        C[i1 * n + (j1 + 1)] = C_0_1;
+                        C[(i1 + 1) * n + (j1 + 1)] = C_1_1;
+                        C[(i1 + 2) * n + (j1 + 1)] = C_2_1;
 
-                        C[i1 * rowsize + (j1 + 2)] = C_0_2;
-                        C[(i1 + 1) * rowsize + (j1 + 2)] = C_1_2;
-                        C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2;
+                        C[i1 * n + (j1 + 2)] = C_0_2;
+                        C[(i1 + 1) * n + (j1 + 2)] = C_1_2;
+                        C[(i1 + 2) * n + (j1 + 2)] = C_2_2;
                     
                     }
                 }
@@ -283,6 +283,7 @@ int i = 0;
     return;
 }
 
+
 /**
  *  
  * this function transposes a square matrix
@@ -339,6 +340,7 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
     double* LLT = (double*)malloc(sizeof(double) * bn * bn);
     double* AUR = (double*)malloc(sizeof(double) * bn * bn2);
     double* AURD = (double*)malloc(sizeof(double) * bn * bn2);
+    double* ALLD = (double*)malloc(sizeof(double) * bn2 * bn);
     double* LL = (double*)malloc(sizeof(double) * bn * bn);
     int* ipivl = (int*)malloc(sizeof(int) * bn);
 
@@ -373,7 +375,8 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
 
         for (j = i + 1; j < bm; j++)
         {
-            A[j * n + i] = A[j * n + i] / A[i * n + i]; 
+            A[j * n + i] = A[j * n + i] / A[i * n + i];
+            
         }
         for (j = i + 1; j < bm; j++)
         {
@@ -392,6 +395,7 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
         memset(ipivl, 0, bn * sizeof(int));
         memset(AUR, 0, bn * bn2 * sizeof(double));
         memset(AURD, 0, bn * bn2 * sizeof(double));
+        memset(ALLD, 0, bn * bn2 * sizeof(double));
 
         for (i = 0; i < bn; i++)
         {
@@ -419,7 +423,7 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
         transpose(LLT, bn, bn);
 
         //A(ib:end , end+1:n) = LL-1 * A(ib:end , end+1:n)
-        mydgemm(LLT, AUR, AURD, bn, bn, bn2, n, b);
+        mydgemm(LLT, AUR, AURD, bn, bn, bn2, b);
 
         for (i = 0; i < bn; i++)
         {
