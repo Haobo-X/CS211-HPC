@@ -497,7 +497,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         {
             for (i = 0; i < bn; i++)
             {
-                for (j1 = j; j1 < blocksize && j1 < bm; j1++)
+                for (j1 = j; j1 < j + blocksize && j1 < bm; j1++)
                 {
                     register double A_i_j = A[i * n + j1];
                     for (k = 0; k < i; k++)
