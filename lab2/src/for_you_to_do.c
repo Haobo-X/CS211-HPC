@@ -482,8 +482,8 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
         }
-        int biasj = bm % 3;
-        int biask = bn % 3;
+        int biasj = (bm - i - 1) % 3;
+        int biask = (bn - i - 1) % 3;
         for (j = i + 1; j < bm - biasj; j += 3)
         {
             register double L1 = A[j * n + i];
