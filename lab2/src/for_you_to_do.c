@@ -508,7 +508,6 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
                 }
             }
         }
-
         mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
     }
     free(tmpr);
@@ -553,7 +552,8 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
         mydgetrf_non_squrare(Aptr, i, ipiv, n, n - i, b, b);
         Aptr += b * n + b;
     }
-    //mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    int blocksize = n % b > 0 ? n % b : b;
+    mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, blocksize, blocksize, blocksize);
     return 0;
 }
 
@@ -567,7 +567,8 @@ int mydgetrf_block_naive(double *A, int *ipiv, int n, int b)
         mydgetrf_non_squrare_naive(Aptr, i, ipiv, n, n - i, b, b);
         Aptr += b * n + b;
     }
-    mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    int blocksize = n % b > 0 ? n % b : b;
+    mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, blocksize, blocksize, blocksize);
     return 0;
 }
 
