@@ -425,13 +425,8 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
         {
             memcpy(A + i * n + bn, AURD + i * bn2, bn2 * sizeof(double));
         }
-        for (i = 0; i < bn2; i++)
-        {
-            memcpy(ALLD + i * bn, A + i * n + bn * n, bn * sizeof(double));
-        }
-
         //A(end+1:n , end+1:n )-= A(end+1:n , ib:end) * A(ib:end , end+1:n)    
-        mydgemm_sub(ALLD, AURD, A + bn * n + bn, bn2, bn, bn2, n, b);
+        mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
     }
 
     free(LLT);
