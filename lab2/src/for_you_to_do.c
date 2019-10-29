@@ -376,10 +376,6 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
         for (j = i + 1; j < bm; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
-            
-        }
-        for (j = i + 1; j < bm; j++)
-        {
             double A_j = A[j * n + i];
             for (k = i + 1; k < bn; k++)
             {
