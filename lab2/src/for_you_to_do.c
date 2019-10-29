@@ -212,6 +212,8 @@ void mydgemm(const double* A, const double* B, double* C, const int m, const int
     }
 }
 
+
+
 void mydgemm_sub(double *A, double *B, double *C, int m, int p, int n, int rowsize, int b)
 {
 int i = 0;
@@ -283,6 +285,76 @@ int i = 0;
     return;
 }
 
+
+inline void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
+{
+    double *A = ptr + bn * n;
+    double *B = ptr + bn;
+    double *C = ptr + bn * n + bn;
+    int i = 0;
+    for (i = 0; i < m; i += b)
+    {
+        int j = 0;
+        for (j = 0; j < m; j += b)
+        {
+            int i1 = 0;
+            for (i1 = i; i1 < (i + b > m? m : (i + b)); i1 += 3)
+            {
+                int j1 = 0;
+                for (j1 = j; j1 < (j + b > m? m : (j + b)); j1 += 3)
+                {
+                    register double C_0_0 = C[i1 * rowsize + j1];
+                    register double C_1_0 = C[(i1 + 1) * rowsize + j1];
+                    register double C_2_0 = C[(i1 + 2) * rowsize + j1];
+
+                    register double C_0_1 = C[i1 * rowsize + (j1 + 1)];
+                    register double C_1_1 = C[(i1 + 1) * rowsize + (j1 + 1)];
+                    register double C_2_1 = C[(i1 + 2) * rowsize + (j1 + 1)];
+
+                    register double C_0_2 = C[i1 * rowsize + (j1 + 2)];
+                    register double C_1_2 = C[(i1 + 1) * rowsize + (j1 + 2)];
+                    register double C_2_2 = C[(i1 + 2) * rowsize + (j1 + 2)];
+
+                    int k1 = 0;
+                    for (k1 = 0; k1 < b; k1++)
+                    {
+                        register double A_0_M = A[i1 * rowsize + k1];
+                        register double A_1_M = A[(i1 + 1) * rowsize + k1];
+                        register double A_2_M = A[(i1 + 2) * rowsize + k1];
+
+                        register double B_M =  B[k1 * rowsize + j1];
+                        C_0_0 -= A_0_M * B_M;
+                        C_1_0 -= A_1_M * B_M;
+                        C_2_0 -= A_2_M * B_M;
+
+                        B_M = B[k1 * rowsize + (j1 + 1)];
+                        C_0_1 -= A_0_M * B_M;
+                        C_1_1 -= A_1_M * B_M;
+                        C_2_1 -= A_2_M * B_M;
+
+                        B_M = B[k1 * rowsize + (j1 + 2)];
+                        C_0_2 -= A_0_M * B_M;
+                        C_1_2 -= A_1_M * B_M;
+                        C_2_2 -= A_2_M * B_M;
+                    }
+
+                    C[i1 * rowsize + j1] = C_0_0;
+                    C[(i1 + 1) * rowsize + j1] = C_1_0;
+                    C[(i1 + 2) * rowsize + j1] = C_2_0;
+
+                    C[i1 * rowsize + (j1 + 1)] = C_0_1;
+                    C[(i1 + 1) * rowsize + (j1 + 1)] = C_1_1;
+                    C[(i1 + 2) * rowsize + (j1 + 1)] = C_2_1;
+
+                    C[i1 * rowsize + (j1 + 2)] = C_0_2;
+                    C[(i1 + 1) * rowsize + (j1 + 2)] = C_1_2;
+                    C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2;                
+                }
+            }
+        }
+    }
+    return;
+}
 
 /**
  *  
@@ -474,7 +546,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
             swap(A-pos, tmpr, n, i, maxidx);
         }
 
-        /*for (j = i + 1; j < bm; j++)
+        for (j = i + 1; j < bm; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
         }
@@ -519,10 +591,10 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
             {
                 A[j * n + k] -= A_j * A[i * n + k];
             }
-        }*/
+        }
     }
 
-    /*if (bn2 > 0)
+    if (bn2 > 0)
     {
         int blocksize = bn;
         for (j = bn; j < bm; j += blocksize)
@@ -539,9 +611,9 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
                     A[i * n + j1] = A_i_j;
                 }
             }
-        }*/
-        //mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
-    //}
+        }
+        mydgemm_sub_best(A, bn2, n, b);
+    }
     free(tmpr);
     return 0;
 }
