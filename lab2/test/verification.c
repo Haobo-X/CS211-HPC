@@ -31,7 +31,7 @@ int test_all_lu_functions()
      *      yzhai015 AT ucr DOT edu
      *
      **/
-    int ni, nList[] = {9/*, 2001, 3000, 4002, 5001*/};
+    int ni, nList[] = {1002, 2001, 3000, 4002, 5001};
     for (ni = 0; ni < sizeof(nList) / sizeof(nList[0]); ni++) {
         int n = nList[ni], i, j;
 
@@ -79,7 +79,7 @@ int test_all_lu_functions()
             printf("my naive LU is incorrect.\n");
 
         t0 = get_sec();    
-        block_lu(A3, B3, n, 3);
+        block_lu(A3, B3, n, 126);
         t1 = get_sec();
         printf("Elapsed time, block LU: %lf seconds\n", t1 - t0);
 
