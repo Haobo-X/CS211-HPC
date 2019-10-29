@@ -288,9 +288,9 @@ int i = 0;
 
 inline void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
 {
-    double *A = ptr + bn * n;
-    double *B = ptr + bn;
-    double *C = ptr + bn * n + bn;
+    double *A = ptr + b * rowsize;
+    double *B = ptr + b;
+    double *C = ptr + b * rowsize + b;
     int i = 0;
     for (i = 0; i < m; i += b)
     {
