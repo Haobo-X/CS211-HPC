@@ -264,17 +264,17 @@ int i = 0;
                             C_2_2 -= A_2_M * B_M;
                         }
 
-                        C[i1 * rowsize + j1] = C_0_0*0;
-                        C[(i1 + 1) * rowsize + j1] = C_1_0*0;
-                        C[(i1 + 2) * rowsize + j1] = C_2_0*0;
+                        C[i1 * rowsize + j1] = C_0_0;
+                        C[(i1 + 1) * rowsize + j1] = C_1_0;
+                        C[(i1 + 2) * rowsize + j1] = C_2_0;
 
-                        C[i1 * rowsize + (j1 + 1)] = C_0_1*0;
-                        C[(i1 + 1) * rowsize + (j1 + 1)] = C_1_1*0;
-                        C[(i1 + 2) * rowsize + (j1 + 1)] = C_2_1*0;
+                        C[i1 * rowsize + (j1 + 1)] = C_0_1;
+                        C[(i1 + 1) * rowsize + (j1 + 1)] = C_1_1;
+                        C[(i1 + 2) * rowsize + (j1 + 1)] = C_2_1;
 
-                        C[i1 * rowsize + (j1 + 2)] = C_0_2*0;
-                        C[(i1 + 1) * rowsize + (j1 + 2)] = C_1_2*0;
-                        C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2*0;                
+                        C[i1 * rowsize + (j1 + 2)] = C_0_2;
+                        C[(i1 + 1) * rowsize + (j1 + 2)] = C_1_2;
+                        C[(i1 + 2) * rowsize + (j1 + 2)] = C_2_2;                
                     }
                 }
             }
@@ -495,10 +495,9 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         int blocksize = bn;
         for (j = bn; j < bm; j += blocksize)
         {
-            blocksize = (j + blocksize) > bm ? bm - j : blocksize;
             for (i = 0; i < bn; i++)
             {
-                for (j1 = j; j1 < blocksize; j1++)
+                for (j1 = j; j1 < blocksize && j1 < bm; j1++)
                 {
                     register double A_i_j = A[i * n + j1];
                     for (k = 0; k < i; k++)
@@ -549,12 +548,12 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
     int i, j, k;
 
     double* Aptr = A;
-    for (i = 0; i < 1; i += b)
+    for (i = 0; i < n - b; i += b)
     {
         mydgetrf_non_squrare(Aptr, i, ipiv, n, n - i, b, b);
         Aptr += b * n + b;
     }
-    //mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
+    mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, n % b, n % b, n % b);
     return 0;
 }
 
