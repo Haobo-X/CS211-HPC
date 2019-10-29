@@ -463,7 +463,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         if (fabs(max - 0.0) < 1e-3)
             return -1;
 
-        /*if (maxidx != i)
+        if (maxidx != i)
         {
             int newMaxidx = pos + maxidx;
             int newI      = pos + i;
@@ -472,7 +472,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
             ipiv[newMaxidx] = ipiv[newMaxidx] ^ ipiv[newI];
 
             swap(A-pos, tmpr, n, i, maxidx);
-        }*/
+        }
 
         /*for (j = i + 1; j < bm; j++)
         {
@@ -522,7 +522,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         }*/
     }
 
-    if (bn2 > 0)
+    /*if (bn2 > 0)
     {
         int blocksize = bn;
         for (j = bn; j < bm; j += blocksize)
@@ -539,7 +539,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
                     A[i * n + j1] = A_i_j;
                 }
             }
-        }
+        }*/
         mydgemm_sub(A + bn * n, A + bn, A + bn * n + bn, bn2, bn, bn2, n, b);
     }
     free(tmpr);
