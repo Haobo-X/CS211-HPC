@@ -340,7 +340,6 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
     double* LLT = (double*)malloc(sizeof(double) * bn * bn);
     double* AUR = (double*)malloc(sizeof(double) * bn * bn2);
     double* AURD = (double*)malloc(sizeof(double) * bn * bn2);
-    double* ALLD = (double*)malloc(sizeof(double) * bn2 * bn);
     double* LL = (double*)malloc(sizeof(double) * bn * bn);
     int* ipivl = (int*)malloc(sizeof(int) * bn);
 
@@ -392,7 +391,6 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
         memset(ipivl, 0, bn * sizeof(int));
         memset(AUR, 0, bn * bn2 * sizeof(double));
         memset(AURD, 0, bn * bn2 * sizeof(double));
-        memset(ALLD, 0, bn * bn2 * sizeof(double));
 
         for (i = 0; i < bn; i++)
         {
