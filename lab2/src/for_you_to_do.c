@@ -287,7 +287,7 @@ int i = 0;
 }
 
 
-inline void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
+void mydgemm_sub_best(double *ptr, int m, int rowsize, int b)
 {
     double *A = ptr + b * rowsize;
     double *B = ptr + b;
