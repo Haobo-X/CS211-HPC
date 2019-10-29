@@ -451,8 +451,8 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
 
     for (i = 0; i < bn; i++)
     {
-        int maxidx = i;
-        double max = fabs(A[i * n + i]);
+        register int maxidx = i;
+        register double max = fabs(A[i * n + i]);
         for (j = i + 1; j < bm; j++)
         {
             double tmp = fabs(A[j * n + i]);
@@ -481,10 +481,30 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         for (j = i + 1; j < bm; j++)
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
-            double A_j = A[j * n + i];
-            for (k = i + 1; k < bn; k++)
+        }
+
+        for (j = i + 1; j < bm; j += 3)
+        {
+            register double L1 = A[j * n + i];
+            register double L2 = j + 1 > bm ? 0 : A[(j + 1) * n + i];
+            register double L3 = j + 2 > bm ? 0 : A[(j + 2) * n + i];
+            for (k = i + 1; k < bn; k += 3)
             {
-                A[j * n + k] -= A_j * A[i * n + k];
+                register double R1 = A[i * n + k];
+                register double R2 = k + 1 > bn ? 0 : A[i * n + k + 1];
+                register double R3 = k + 2 > bn ? 0 : A[i * n + k + 2];
+
+                A[j * n + k] -= L1 * R1;
+                A[(j + 1) * n + k] -= L2 * R1;
+                A[(j + 2) * n + k] -= L3 * R1;
+
+                A[j * n + k + 1] -= L1 * R2;
+                A[(j + 1) * n + k + 1] -= L2 * R2;
+                A[(j + 2) * n + k + 1] -= L3 * R2;
+
+                A[j * n + k + 2] -= L1 * R3;
+                A[(j + 1) * n + k + 2] -= L2 * R3;
+                A[(j + 2) * n + k + 2] -= L3 * R3;
             }
         }
     }
