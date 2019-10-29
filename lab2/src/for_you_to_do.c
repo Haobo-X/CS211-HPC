@@ -549,7 +549,7 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
     int i, j, k;
 
     double* Aptr = A;
-    for (i = 0; i < n - b; i += b)
+    for (i = 0; i < 1; i += b)
     {
         mydgetrf_non_squrare(Aptr, i, ipiv, n, n - i, b, b);
         Aptr += b * n + b;
