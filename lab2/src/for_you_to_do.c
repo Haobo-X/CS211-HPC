@@ -553,7 +553,8 @@ int mydgetrf_block(double *A, int *ipiv, int n, int b)
         Aptr += b * n + b;
     }
     int blocksize = n % b > 0 ? n % b : b;
-    mydgetrf_non_squrare(Aptr, (n / b) * b, ipiv, n, blocksize, blocksize, blocksize);
+    int bias = n % b > 0 ? (n / b) * b : n - b;
+    mydgetrf_non_squrare(Aptr, bias, ipiv, n, blocksize, blocksize, blocksize);
     return 0;
 }
 
@@ -568,7 +569,8 @@ int mydgetrf_block_naive(double *A, int *ipiv, int n, int b)
         Aptr += b * n + b;
     }
     int blocksize = n % b > 0 ? n % b : b;
-    mydgetrf_non_squrare_naive(Aptr, (n / b) * b, ipiv, n, blocksize, blocksize, blocksize);
+    int bias = n % b > 0 ? (n / b) * b : n - b;
+    mydgetrf_non_squrare_naive(Aptr, bias, ipiv, n, blocksize, blocksize, blocksize);
     return 0;
 }
 
