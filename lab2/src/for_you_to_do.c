@@ -489,6 +489,7 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
             register double L1 = A[j * n + i];
             register double L2 = A[(j + 1) * n + i];
             register double L3 = A[(j + 2) * n + i];
+
             for (k = i + 1; k < bn - biask; k += 3)
             {
                 register double R1 = A[i * n + k];
@@ -507,11 +508,18 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
                 A[(j + 1) * n + k + 2] -= L2 * R3;
                 A[(j + 2) * n + k + 2] -= L3 * R3;
             }
+            for (k = bn - biask; k < bn; k++)
+            {
+                register double R1 = A[i * n + k];
+                A[j * n + k] -= L1 * R1;
+                A[(j + 1) * n + k] -= L2 * R1;
+                A[(j + 2) * n + k] -= L3 * R1;
+            }   
         }
         for (j = bm - biasj; j < bm; j++)
         {
             double A_j = A[j * n + i];
-            for (k = bn - biask; k < bn; k++)
+            for (k = i + 1; k < bn; k++)
             {
                 A[j * n + k] -= A_j * A[i * n + k];
             }
