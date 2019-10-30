@@ -517,8 +517,8 @@ int mydgetrf_non_squrare_naive(double* A, int pos, int* ipiv, int n, int bm, int
 int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, int b)
 {
     /* add your code here */
-    int i, j, k, i1, j1;
-    int bn2 = bm - bn;
+    register int i, j, k, i1, j1;
+    register int bn2 = bm - bn;
     double* tmpr = (double*)malloc(sizeof(double) * n);
 
     for (i = 0; i < bn; i++)
@@ -554,46 +554,56 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         {
             A[j * n + i] = A[j * n + i] / A[i * n + i];
         }
-        int biasj = (bm - i - 1) % 3;
-        int biask = (bn - i - 1) % 3;
-        for (j = i + 1; j < bm - biasj; j += 3)
+        register int biasj = bm - (bm - i - 1) % 3;
+        register int biask = bn - (bn - i - 1) % 3;
+        for (j = i + 1; j < biasj; j += 3)
         {
-            register double L1 = A[j * n + i];
-            register double L2 = A[(j + 1) * n + i];
-            register double L3 = A[(j + 2) * n + i];
+            register int i00 = j * n + i;
+            register int i10 = i00 + n;
+            register int i20 = i10 + n;
+            register double L1 = A[i00];
+            register double L2 = A[i10];
+            register double L3 = A[i20];
 
-            for (k = i + 1; k < bn - biask; k += 3)
+            for (k = i + 1; k < biask; k += 3)
             {
-                register double R1 = A[i * n + k];
-                register double R2 = A[i * n + k + 1];
-                register double R3 = A[i * n + k + 2];
+                register int j00 = i * n + k;
+                register int k00 = j * n + k;
+                register int k10 = k00 + n;
+                register int k20 = k10 + n;
+                register double R1 = A[j00];
+                register double R2 = A[j00 + 1];
+                register double R3 = A[j00 + 2];
 
-                A[j * n + k] -= L1 * R1;
-                A[(j + 1) * n + k] -= L2 * R1;
-                A[(j + 2) * n + k] -= L3 * R1;
+                A[k00] -= L1 * R1;
+                A[k10] -= L2 * R1;
+                A[k20] -= L3 * R1;
 
-                A[j * n + k + 1] -= L1 * R2;
-                A[(j + 1) * n + k + 1] -= L2 * R2;
-                A[(j + 2) * n + k + 1] -= L3 * R2;
+                A[k00 + 1] -= L1 * R2;
+                A[k10 + 1] -= L2 * R2;
+                A[k20 + 1] -= L3 * R2;
 
-                A[j * n + k + 2] -= L1 * R3;
-                A[(j + 1) * n + k + 2] -= L2 * R3;
-                A[(j + 2) * n + k + 2] -= L3 * R3;
+                A[k00 + 2] -= L1 * R3;
+                A[k10 + 2] -= L2 * R3;
+                A[k20 + 2] -= L3 * R3;
             }
-            for (k = bn - biask; k < bn; k++)
+            for (k = biask; k < bn; k++)
             {
+                register int k00 = j * n + k;
                 register double R1 = A[i * n + k];
-                A[j * n + k] -= L1 * R1;
-                A[(j + 1) * n + k] -= L2 * R1;
-                A[(j + 2) * n + k] -= L3 * R1;
+                A[k00] -= L1 * R1;
+                A[k00 + n] -= L2 * R1;
+                A[k00 + n + n] -= L3 * R1;
             }   
         }
-        for (j = bm - biasj; j < bm; j++)
+        for (j = biasj; j < bm; j++)
         {
-            register double A_j = A[j * n + i];
+            register int jn = j * n;
+            register int in = i * n;
+            register double A_j = A[jn + i];
             for (k = i + 1; k < bn; k++)
             {
-                A[j * n + k] -= A_j * A[i * n + k];
+                A[jn + k] -= A_j * A[in + k];
             }
         }
     }
@@ -605,14 +615,16 @@ int mydgetrf_non_squrare(double* A, int pos, int* ipiv, int n, int bm, int bn, i
         {
             for (i = 0; i < bn; i++)
             {
-                for (j1 = j; j1 < j + blocksize && j1 < bm; j1++)
+                register int jbound = j + blocksize > bm ? bm : j + blocksize;
+                for (j1 = j; j1 < jbound; j1++)
                 {
-                    register double A_i_j = A[i * n + j1];
+                    register int in = i * n;
+                    register double A_i_j = A[in + j1];
                     for (k = 0; k < i; k++)
                     {
-                        A_i_j -= A[i * n + k] * A[k * n + j1];
+                        A_i_j -= A[in + k] * A[k * n + j1];
                     }
-                    A[i * n + j1] = A_i_j;
+                    A[in + j1] = A_i_j;
                 }
             }
         }
