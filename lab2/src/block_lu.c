@@ -220,7 +220,7 @@ void block_lu_naive(double *A, double *B, int n, int b)
         return;
     }
 
-    mydtrsm_n('L', A, B, n, ipiv);
-    mydtrsm_n('U', A, B, n, ipiv);
+    mydtrsv('L', A, B, n, ipiv);
+    mydtrsv('U', A, B, n, ipiv);
 
 }
