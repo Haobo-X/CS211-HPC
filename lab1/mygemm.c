@@ -906,19 +906,19 @@ inline void mydgemm_sub_best(const double* A, const double* B, double* C, int m,
                         register double A_2_M = A[j00 + 2 * rowsize];
 
                         register double B_M =  B[k00];
-                        C_0_0 -= A_0_M * B_M;
-                        C_1_0 -= A_1_M * B_M;
-                        C_2_0 -= A_2_M * B_M;
+                        C_0_0 += A_0_M * B_M;
+                        C_1_0 += A_1_M * B_M;
+                        C_2_0 += A_2_M * B_M;
 
                         B_M = B[k00 + 1];
-                        C_0_1 -= A_0_M * B_M;
-                        C_1_1 -= A_1_M * B_M;
-                        C_2_1 -= A_2_M * B_M;
+                        C_0_1 += A_0_M * B_M;
+                        C_1_1 += A_1_M * B_M;
+                        C_2_1 += A_2_M * B_M;
 
                         B_M = B[k00 + 2];
-                        C_0_2 -= A_0_M * B_M;
-                        C_1_2 -= A_1_M * B_M;
-                        C_2_2 -= A_2_M * B_M;
+                        C_0_2 += A_0_M * B_M;
+                        C_1_2 += A_1_M * B_M;
+                        C_2_2 += A_2_M * B_M;
                     }
 
                     C[i00] = C_0_0;
