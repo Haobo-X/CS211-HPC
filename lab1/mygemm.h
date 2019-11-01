@@ -19,4 +19,5 @@ void bikj(const double *A, const double *B, double *C, const int n, const int b)
 void bjki(const double *A, const double *B, double *C, const int n, const int b);
 void bkji(const double *A, const double *B, double *C, const int n, const int b);
 void optimal(const double* A, const double* B, double *C, const int n, const int b);
+inline void mydgemm_sub_best(const double* A, const double* B, double* C, int m, int rowsize, int b);
 void strassen(const double *A, const double *B, double *C, const int n);
