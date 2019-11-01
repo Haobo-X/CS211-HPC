@@ -869,13 +869,16 @@ void optimal_check(const double* A, const double* B, double* C, const int n, con
 
 inline void mydgemm_sub_best(const double* A, const double* B, double* C, int m, int rowsize, int b)
 {
-    register int i, j, i1, j1, k1;
+    register int i, j, k, i1, j1, k1;
     for (i = 0; i < m; i += b)
     {
         register int i1bound = i + b > m? m : (i + b);
         for (j = 0; j < m; j += b)
         {
             register int j1bound = j + b > m? m : (j + b);
+          for (k = 0; k < m; k += b)
+          {
+            register int k1bound = k + b > m? m : (k + b);
             for (i1 = i; i1 < i1bound; i1 += 3)
             {
                 for (j1 = j; j1 < j1bound; j1 += 3)
@@ -896,7 +899,7 @@ inline void mydgemm_sub_best(const double* A, const double* B, double* C, int m,
                     register double C_1_2 = C[i10 + 2];
                     register double C_2_2 = C[i20 + 2];
 
-                    for (k1 = 0; k1 < b; k1++)
+                    for (k1 = k; k1 < k1bound; k1++)
                     {
                         register int j00 = i1 * rowsize + k1;
                         register int k00 = k1 * rowsize + j1;
@@ -934,6 +937,7 @@ inline void mydgemm_sub_best(const double* A, const double* B, double* C, int m,
                     C[i20 + 2] = C_2_2;                
                 }
             }
+          }
         }
     }
     return;
