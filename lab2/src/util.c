@@ -94,8 +94,8 @@ int verify_matrix(const double *C, const double *D, const int m, const int n)
 {
 	int i;
 	double diff;
-	print_matrix(C,m,n);
-	print_matrix(D,m,n);
+	//print_matrix(C,m,n);
+	//print_matrix(D,m,n);
 	for (i = 0; i < m * n; i++)
 	{
 		diff = fabs(C[i] - D[i]);

@@ -31,7 +31,7 @@ int test_all_lu_functions()
      *      yzhai015 AT ucr DOT edu
      *
      **/
-    int ni, nList[] = {10/*1002, 2001, 3000, 4002, 5001*/};
+    int ni, nList[] = {/*1002, 2001, 3000, 4002,*/ 5001};
     for (ni = 0; ni < sizeof(nList) / sizeof(nList[0]); ni++) {
         int n = nList[ni], i, j;
 
