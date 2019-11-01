@@ -899,7 +899,7 @@ inline void mydgemm_sub_best(const double* A, const double* B, double* C, int m,
                     register double C_1_2 = C[i10 + 2];
                     register double C_2_2 = C[i20 + 2];
 
-                    for (k1 = k; k1 < (k + b > n? n : (k + b)); k1++)
+                    for (k1 = k; k1 < (k + b > m? m : (k + b)); k1++)
                     {
                         register int j00 = i1 * rowsize + k1;
                         register int k00 = k1 * rowsize + j1;
