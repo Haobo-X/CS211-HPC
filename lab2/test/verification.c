@@ -31,7 +31,7 @@ int test_all_lu_functions()
      *      yzhai015 AT ucr DOT edu
      *
      **/
-    int ni, nList[] = {1002, 2001, 3000, 4002, 5001};
+    int ni, nList[] = {10/*1002, 2001, 3000, 4002, 5001*/};
     for (ni = 0; ni < sizeof(nList) / sizeof(nList[0]); ni++) {
         int n = nList[ni], i, j;
 
@@ -70,14 +70,14 @@ int test_all_lu_functions()
         t1 = get_sec();
         printf("Elapsed time, MKL LAPACK: %lf seconds\n", t1 - t0);
 
-        t0 = get_sec();    
+        /*t0 = get_sec();    
         naive_lu(A2, B2, n);
         t1 = get_sec();
         printf("Elapsed time, naive LU: %lf seconds\n", t1 - t0);
 
         if (verify_matrix(A1, A2, n, n) || verify_matrix(B1, B2, n, 1))
             printf("my naive LU is incorrect.\n");
-
+        */
         t0 = get_sec();    
         block_lu(A3, B3, n, 3);
         t1 = get_sec();
