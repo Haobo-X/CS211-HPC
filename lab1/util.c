@@ -93,6 +93,7 @@ int verify_matrix(const double *C, const double *D, const int m, const int n)
 {
 	int i;
 	double diff = 0.;
+	
     /* we assume input matrices are perfectly initialized */
 	for (i = 0; i < m * n; i++)
 	{
@@ -102,6 +103,8 @@ int verify_matrix(const double *C, const double *D, const int m, const int n)
 
 	if (diff > 1e-3) 
     {
+		print_matrix(C,m,n);
+		print_matrix(D,m,n);
 //        printf("incorrect. bias = %lf\n", diff);
         return -1;
     }
