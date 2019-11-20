@@ -1,0 +1,1 @@
+The total number of prime: 0, total time:   0.000004, total node 64
