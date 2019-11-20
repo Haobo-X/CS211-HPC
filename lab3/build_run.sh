@@ -5,4 +5,4 @@ cmake ..
 make
 cd ~/CS211-HPC/lab3/script
 ./submit.sh
-watch -d -n 1 squeue
+watch -d -n 1 squeue -u zyang147
