@@ -98,7 +98,7 @@ int main (int argc, char *argv[])
    for (i = 0; i < size2; i++) marked2[i] = 0;
    //seperate to increase cache hit
    unsigned long int start2 = 0;
-   unsigned long int end2 = 0;
+   unsigned long int end2 = 3;
    unsigned long int index2 = 0; 
    index = 0;
    while(end2 < size2)
@@ -109,9 +109,10 @@ int main (int argc, char *argv[])
       prime = 3;
       index2 = 0;
       //3->2*index+3
-      while(prime <= 2 * index + 3)
+      while(index2 < index)
       {
-         for (i = start2; i <= MIN(end2, size2 - 1) ; i += prime) marked2[i] = 1;
+         while(start2 % prime) start2++;
+         for (i = start2; i < MIN(end2, size2) ; i += prime) marked2[i] = 1;
          while (marked2[++index2]);
          prime = 2 * index2 + 3;
       }
