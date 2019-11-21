@@ -91,6 +91,14 @@ int main (int argc, char *argv[])
 
    for (i = 0; i < size; i++) marked[i] = 0;
    for (i = 0; i < size2; i++) marked2[i] = 0;
+   //seperate to increase cache hit, 10^5 < cache
+   index = 0;
+   prime = 3;
+   do {
+      for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
+         while (marked2[++index]);
+         prime = 2 * index + 3;
+   } while (prime * prime <= n);
 
    /*if (!id)*/ index = 0;
    prime = 3;
@@ -110,14 +118,14 @@ int main (int argc, char *argv[])
       }
       //dont need change stride = 2*prime/2 = prime, 
       for (i = first; i < size; i += prime) marked[i] = 1;
-      for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
+      //for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
 
       /*if (!id) {*/
          while (marked2[++index]);
          prime = 2 * index + 3;
       /*}*/
       /*if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);*/
-   } while (prime * prime <= n);
+   } while (prime * prime <= high_value);
    count = 0;
    for (i = 0; i < size; i++)
       if (!marked[i]) count++;
