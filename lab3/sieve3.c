@@ -109,7 +109,7 @@ int main (int argc, char *argv[])
       prime = 3;
       index2 = 0;
       //3->2*index+3
-      while(prime < 2 * index + 3)
+      while(prime <= 2 * index + 3)
       {
          for (i = start2; i <= MIN(end2, size2 - 1) ; i += prime) marked2[i] = 1;
          while (marked2[++index2]);
