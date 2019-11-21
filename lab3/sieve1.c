@@ -39,7 +39,6 @@ int main (int argc, char *argv[])
    }
 
    n = atoll(argv[1]);
-   /* Stop the timer */
 
    /* Add you code here  */
    //let even number be 2*i+2, odd number is 2*i+3, 10^10 number has 5*10^9 even.
