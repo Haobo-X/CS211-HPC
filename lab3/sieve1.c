@@ -94,6 +94,8 @@ int main (int argc, char *argv[])
          prime = 2 * index + 3;
       }
       if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);
+      if (prime * prime > high_value)
+         break;
    } while (prime * prime <= high_value);
    count = 0;
    for (i = 0; i < size; i++)
