@@ -111,7 +111,7 @@ int main (int argc, char *argv[])
       }
       //dont need change stride = 2*prime/2 = prime, 
       for (i = first; i < size; i += prime) marked[i] = 1;
-      for (i = prime; i < size2; i += prime) marked2[i] = 1;
+      for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
 
       /*if (!id) {*/
          while (marked2[++index]);
