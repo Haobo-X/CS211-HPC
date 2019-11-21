@@ -90,10 +90,6 @@ int main (int argc, char *argv[])
       exit(1);
    }
 
-   unsigned long int tmp_high_value = high_value;
-   unsigned long int tmp_size = 0;
-   unsigned long int tmp_size2 = 0;
-
    for (i = 0; i < size; i++) marked[i] = 0;
    for (i = 0; i < size2; i++) marked2[i] = 0;
    //seperate to increase cache hit, 10^5 < cache
@@ -107,34 +103,48 @@ int main (int argc, char *argv[])
 
    //LEVEL2_CACHE_SIZE                  2097152
    //LEVEL2_CACHE_LINESIZE              64
-   unsigned long int block_size = 1048576;
+   unsigned long int blockSize = 2000000;
+   unsigned long int itr = size / block_size;
+   unsigned long int blockStart = 0;
+   if (size % block_size) itr++;
 
-   /*if (!id)*/ index = 0;
-   prime = 3;
-   do {
-      if (prime * prime > low_value)
-         first = (prime * prime - low_value) / 2;
-         //odd number minuses odd number = even number, divide by 2 to find index
-      else {
-         if (!(low_value % prime)) first = 0;
-         else 
-         {
-            first = (low_value / prime + 1) * prime;
-            first = ((first - low_value) % 2) == 0 ? first : first + prime;
-            //make sure first is odd
-            first = (first - low_value) / 2;
+   while(itr--)
+   {
+      low_value = 2 * (low_value_idx + blockStart) + 3;
+      high_value = 2 * (low_value_idx + blockStart + blockSize) + 3;
+      if (itr == 1)
+         high_value = 2 * high_value_idx + 3;
+      /*if (!id)*/ index = 0;
+      prime = 3;
+      do {
+         if (prime * prime > low_value)
+            first = (prime * prime - low_value) / 2;
+            //odd number minuses odd number = even number, divide by 2 to find index
+         else {
+            if (!(low_value % prime)) first = 0;
+            else 
+            {
+               first = (low_value / prime + 1) * prime;
+               first = ((first - low_value) % 2) == 0 ? first : first + prime;
+               //make sure first is odd
+               first = (first - low_value) / 2;
+            }
          }
-      }
-      //dont need change stride = 2*prime/2 = prime, 
-      for (i = first; i < size; i += prime) marked[i] = 1;
-      //for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
+         //dont need change stride = 2*prime/2 = prime, 
+         for (i = blockStart + first; i < blockStart + blockSize && i < size; i += prime) marked[i] = 1;
+         //for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
 
-      /*if (!id) {*/
-         while (marked2[++index]);
-         prime = 2 * index + 3;
-      /*}*/
-      /*if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);*/
-   } while (prime * prime <= n);
+         /*if (!id) {*/
+            while (marked2[++index]);
+            prime = 2 * index + 3;
+         /*}*/
+         /*if (p > 1) MPI_Bcast(&prime, 1, MPI_INT, 0, MPI_COMM_WORLD);*/
+      } while (prime * prime <= high_value);
+
+      blockStart += blockSize;
+   }
+
+   
    count = 0;
    for (i = 0; i < size; i++)
       if (!marked[i]) count++;
