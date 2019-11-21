@@ -42,9 +42,9 @@ int main (int argc, char *argv[])
 
    /* Add you code here  */
    //let even number be 2*i+2, odd number is 2*i+3, 10^10 number has 5*10^9 even.
-   long long int oddn = n - n / 2 - 1; 
-   long long int low_value_idx = id * oddn / p;
-   long long int high_value_idx = -1 + (id + 1) * oddn / p;
+   unsigned long int oddn = n - n / 2 - 1; 
+   unsigned long int low_value_idx = id * oddn / p;
+   unsigned long int high_value_idx = -1 + (id + 1) * oddn / p;
    size = high_value_idx - low_value_idx + 1;
    low_value = 2 * low_value_idx + 3;
    high_value = 2 * high_value_idx + 3;
