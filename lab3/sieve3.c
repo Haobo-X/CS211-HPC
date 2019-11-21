@@ -59,11 +59,11 @@ int main (int argc, char *argv[])
    /* Add you code here  */
 
    //let even number be 2*i+2, odd number is 2*i+3, 10^10 number has 5*10^9 even.
-   unsigned long int oddn = n - n / 2 - 1; 
+   unsigned long long int oddn = n - n / 2 - 1; 
    unsigned long int size2 = (int) sqrt((double) n) + 1;
                  size2 = size2 - size2 / 2 - 1; 
-   unsigned long int low_value_idx = id * oddn / p;
-   unsigned long int high_value_idx = -1 + (id + 1) * oddn / p;
+   unsigned long long int low_value_idx = id * oddn / p;
+   unsigned long long int high_value_idx = -1 + (id + 1) * oddn / p;
    size = high_value_idx - low_value_idx + 1;
    low_value = 2 * low_value_idx + 3;
    high_value = 2 * high_value_idx + 3;
@@ -96,27 +96,18 @@ int main (int argc, char *argv[])
 
    for (i = 0; i < size; i++) marked[i] = 0;
    for (i = 0; i < size2; i++) marked2[i] = 0;
-   //seperate to increase cache hit
-   unsigned long int start2 = 0;
-   unsigned long int end2 = 3;
-   unsigned long int index2 = 0; 
+   //seperate to increase cache hit, 10^5 < cache
    index = 0;
-   while(end2 < size2)
-   {
-      while (marked2[++index]);
-      start2 = end2;
-      end2 = ((index * 2 + 3) * (index * 2 + 3) - 3) / 2;
-      prime = 3;
-      index2 = 0;
-      //3->2*index+3
-      while(index2 < index)
-      {
-         while(start2 % prime) start2++;
-         for (i = start2; i < MIN(end2, size2) ; i += prime) marked2[i] = 1;
-         while (marked2[++index2]);
-         prime = 2 * index2 + 3;
-      }
-   }
+   prime = 3;
+   do {
+      for (i = (prime * 3 - 3) / 2; i < size2; i += prime) marked2[i] = 1;
+         while (marked2[++index]);
+         prime = 2 * index + 3;
+   } while (prime * prime <= n);
+
+   //LEVEL2_CACHE_SIZE                  2097152
+   //LEVEL2_CACHE_LINESIZE              64
+   unsigned long int block_size = 1048576;
 
    /*if (!id)*/ index = 0;
    prime = 3;
