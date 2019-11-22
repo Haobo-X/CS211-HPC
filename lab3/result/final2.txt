@@ -1,0 +1,21 @@
+
+sieve0: 
+The total number of prime: 455052511, total time:  27.901937, total node 32
+The total number of prime: 455052511, total time:  26.176348, total node 64
+The total number of prime: 455052511, total time:   7.059879, total node 128
+The total number of prime: 455052511, total time:   3.591973, total node 256
+sieve1: 
+The total number of prime: 455052511, total time:  13.479256, total node 32
+The total number of prime: 455052511, total time:   6.841838, total node 64
+The total number of prime: 455052511, total time:   3.704223, total node 128
+The total number of prime: 455052511, total time:   1.939729, total node 256
+sieve2: 
+The total number of prime: 455052511, total time:  25.021929, total node 32
+The total number of prime: 455052511, total time:   6.944194, total node 64
+The total number of prime: 455052511, total time:   3.448321, total node 128
+The total number of prime: 455052511, total time:   1.944055, total node 256
+sieve3: 
+The total number of prime: 455052511, total time:   3.983985, total node 32
+The total number of prime: 455052511, total time:   2.048553, total node 64
+The total number of prime: 455052511, total time:   1.066557, total node 128
+The total number of prime: 455052511, total time:   0.559516, total node 256
