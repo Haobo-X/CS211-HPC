@@ -103,7 +103,7 @@ int main (int argc, char *argv[])
 
    //LEVEL2_CACHE_SIZE                  2097152
    //LEVEL2_CACHE_LINESIZE              64
-   unsigned long int blockSize = 2050000;
+   unsigned long int blockSize = 2000000;
    unsigned long int itr = size / blockSize;
    unsigned long int blockStart = 0;
    if (size % blockSize) itr++;
